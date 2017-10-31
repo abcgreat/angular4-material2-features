@@ -12,12 +12,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^4.2.4",
+    "@angular/animations": "^4.4.6",
+    "@angular/cdk": "github:angular/cdk-builds",
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
     "@angular/core": "^4.2.4",
     "@angular/forms": "^4.2.4",
     "@angular/http": "^4.2.4",
+    "@angular/material": "github:angular/material2-builds",
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
@@ -45,5 +47,16 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.3.3"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.9.",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abcgreat/angular4-material2-features.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/abcgreat/angular4-material2-features/issues"
+  },
+  "homepage": "https://github.com/abcgreat/angular4-material2-features#readme"
 }
