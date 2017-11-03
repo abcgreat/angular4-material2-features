@@ -13,12 +13,60 @@
     font-size: 20px;
   }
   
-  .mat-table {
-    overflow: auto;
-    max-height: 500px;
+  mat-table {
+    border: 1;
   }
   
   .mat-header-cell .mat-sort-header-sorted {
     color: black;
+    font-size: 80px;
   }
+
+  mat-header-row {
+    align-items: center;
+    
+  }
+  /* this works */
+  mat-header-cell {
+    color: black;
+    border: 1;
+
+  }
+
+  mat-cell {    
+    border: 1;
+  }
+
+  mat-sort-header-button {
+    color: black;
+  }
+
+  .mat-column-userId {
+    display: flex;
+    text-align: center;
+    }
+
+    .mat-column-userName {
+      display: flex;
+      text-align: center;
+      }
   
+      .mat-column-progress {
+        display: flex;
+        text-align: center;
+        }
+  
+        .mat-column-color {
+          display: flex;
+          text-align: center;
+          }
+        
+
+  .mat-header-row, .mat-row {
+    display: flex;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 24px;
+  }
