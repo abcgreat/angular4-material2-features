@@ -60,57 +60,21 @@
   display: flex;
   text-align: center;
   } 
-  
-  /* .mat-header-cell .mat-sort-header-sorted {
-    color: black;
-    font-size: 80px;
+
+
+  .cdk-column-filterUserId {
+    width: 15px;
+    text-align: right;
+    padding: 0;
   }
+  
 
-  mat-header-row {
-    align-items: center;
-    
-  } */
-  /* this works */
-  /* mat-header-cell {
-    color: black;
-    border: 1;
-
-  } */
-
-  /* mat-cell {    
-    border: 1;
+  .cdk-column-filterColor {
+    width: 15px;
+    text-align: right;
+    padding: 0;
   }
-
-  mat-sort-header-button {
-    color: black;
-  } */
-
-  /* .mat-column-userId {
-    display: flex;
-    text-align: center;
-    }
-
-    .mat-column-userName {
-      display: flex;
-      text-align: center;
-      } */
   
-      /* .mat-column-progress {
-        display: flex;
-        text-align: center;
-        }
-  
-        .mat-column-color {
-          display: flex;
-          text-align: center;
-          }
-         */
-
-  /* .mat-header-row, .mat-row {
-    display: flex;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    align-items: center;
-    min-height: 48px;
-    padding: 0 24px;
-  } */
+  .demo-chip-list {
+    width: 100%;
+  }
