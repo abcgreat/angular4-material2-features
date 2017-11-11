@@ -3,14 +3,43 @@
 </p>
 
 <div class="example-container mat-elevation-z8">
+
+    <mat-form-field class="demo-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+                   [removable]="removable" (remove)="remove(fruit)">
+            {{fruit.name}}
+            <mat-icon matChipRemove *ngIf="removable">
+              cancel
+            </mat-icon>
+          </mat-chip>
+          <input placeholder="New fruit..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)" />
+        </mat-chip-list>
+      </mat-form-field>
+
+
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
+    <!-- filterUserId Column -->
+    <ng-container matColumnDef="filterUserId">  
+      <mat-header-cell *matHeaderCellDef style="text-align:center;">
+        <button mat-icon-button [matMenuTriggerFor]="menu"> <i class="fa fa-filter"></i>
+        </button>          
+      </mat-header-cell>  
+      <mat-cell *matCellDef="let row"></mat-cell>
+    </ng-container>
+        
     <!-- ID Column -->
     <ng-container matColumnDef="userId">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ID </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;">
+        ID </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
     </ng-container>
 
@@ -26,17 +55,27 @@
       <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
     </ng-container>
 
+
+    <!-- filterColor Column -->
+    <ng-container matColumnDef="filterColor">  
+        <mat-header-cell *matHeaderCellDef style="text-align:center;">
+          <button mat-icon-button [matMenuTriggerFor]="menuColor"> <i class="fa fa-filter"></i>
+          </button>          
+        </mat-header-cell>  
+        <mat-cell *matCellDef="let row"></mat-cell>
+      </ng-container>
+          
+
     <!-- Color Column -->
     <ng-container matColumnDef="color">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Color </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> 
+        Color </mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-
-  
+  </mat-table>  
 
   <mat-paginator #paginator
   [length]="exampleDatabase.data.length"
@@ -45,4 +84,37 @@
   [pageSizeOptions]="[5, 10, 25, 100]">
 </mat-paginator>
 
+
+<mat-menu #menu="matMenu">
+
+  <mat-selection-list #shoes>
+      <mat-list-option *ngFor="let shoe of typesOfShoes"
+      [checkboxPosition]="before"  
+      >
+        {{shoe}}
+      </mat-list-option>
+    </mat-selection-list>
+    
+    <p>
+      Options selected: {{shoes.selectedOptions.selected.length}}
+    </p>
+
+</mat-menu>
+
+
+
+
+<mat-menu #menuColor="matMenu">
+    
+        <mat-selection-list #colors3>
+            <mat-list-option *ngFor="let color of abcdCOLORS">
+              {{color}}
+            </mat-list-option>
+          </mat-selection-list>
+          
+          <p>
+            Options selected: {{colors3.selectedOptions.selected.length}}
+          </p>
+    
+      </mat-menu>
 </div>

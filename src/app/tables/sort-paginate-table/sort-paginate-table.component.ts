@@ -1,11 +1,21 @@
 import {Component, ViewChild} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
-import {MatSort, MatPaginator} from '@angular/material';
+import {MatSort,
+  MatPaginator,
+  MatChipInputEvent,
+  MatChipsModule,
+  MatIconModule,
+  MatFormFieldModule,
+  MatListOptionChange
+  } from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ENTER} from '@angular/cdk/keycodes';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
+
+const COMMA = 188;
 
 
 @Component({
@@ -14,9 +24,80 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./sort-paginate-table.component.css']
 })
 export class SortPaginateTableComponent {
-  displayedColumns = ['userId', 'userName', 'progress', 'color'];
+  visible: boolean = true;
+  selectable: boolean = true;
+  removable: boolean = true;
+  addOnBlur: boolean = true;
+
+
+  // Enter, comma
+  separatorKeysCodes = [ENTER, COMMA];
+  
+
+  fruits = [
+    { name: 'Lemon' },
+    { name: 'Lime' },
+    { name: 'Apple' },
+  ];
+
+
+  add(event: MatChipInputEvent): void {
+    let input = event.input;
+    let value = event.value;
+
+    // Add our person
+    if ((value || '').trim()) {
+      this.fruits.push({ name: value.trim() });
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(fruit: any): void {
+    let index = this.fruits.indexOf(fruit);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+    }
+  }
+
+  addFromOutside(): void  {
+    console.log('Just a dummy fruit');
+    this.fruits.push({ name: 'Just a dummy fruit' });
+  }
+
+  // onOptionSelectionChange: (event?: MatListOptionChange) => void = () => {
+  //   console.log('Just a dummy fruit');
+  //   this.fruits.push({ name: 'Just a dummy fruit' });
+  // }
+
+
+  onOptionSelectionChange (item: string): void {
+    console.log('Just a dummy fruit');
+    this.fruits.push({ name: 'Just a dummy fruit' });
+  }
+
+
+  displayedColumns = ['filterUserId', 'userId', 'userName', 'progress', 'filterColor', 'color'];
+
+  // displayedColumns = ['userId', 'userName', 'progress', 'color'];
+
+
   exampleDatabase = new ExampleDatabase();
   dataSource: ExampleDataSource | null;
+
+  typesOfShoes = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+
+
+  abcdCOLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
+  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
+
+  abcdNAMES = ['Maia AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Asher', 'Olivia AAAAAAAAAAAAAAAAAAAAAA', 'Atticus', 'Amelia', 'Jack',
+  'Charlotte', 'Theodore', 'Isla AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Oliver', 'Isabella AAAAAAAAAAAAAAAAAAAAAA', 'Jasper',
+  'Cora', 'Levi', 'Violet', 'Arthur AAAAAAAAAAAAAAAAAAAAAA', 'Mia', 'Thomas', 'Elizabeth'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -116,6 +197,7 @@ export class ExampleDataSource extends DataSource<any> {
       let propertyB: number|string = '';
 
       switch (this._sort.active) {
+        case 'filterUserId': break;
         case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
         case 'userName': [propertyA, propertyB] = [a.name, b.name]; break;
         case 'progress': [propertyA, propertyB] = [a.progress, b.progress]; break;
