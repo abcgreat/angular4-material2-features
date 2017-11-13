@@ -1,0 +1,42 @@
+<div class="layout-fixed">
+  <mat-toolbar color="primary"z>
+  Angular Material 2 App
+  </mat-toolbar>
+  <div>
+    <mat-card>
+      <form class="person-form"
+        #personEditForm="ngForm"
+        [formGroup]="form"
+        novalidate>
+
+        <div>
+          <mat-form-field fxFlex>
+            <input matInput fxFlex
+                    type="text"
+                    formControlName="name"
+                    placeholder="Name" i18n-placeholder
+                    required>
+          </mat-form-field>
+        </div>
+        <div>
+          <fieldset>
+            <legend i18n>Status</legend>
+            <mh-tags [source]="source"
+                    formControlName="status"></mh-tags>
+          </fieldset>
+        </div>
+
+      </form>
+    </mat-card>
+    <mat-card>
+      {{person | json}}
+    </mat-card>
+  </div>
+  <span class="version-info">Current build: {{version.full}}</span>
+</div>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+-->

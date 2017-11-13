@@ -3,8 +3,8 @@ import { NgModule, Component, ElementRef, ViewChild } from '@angular/core';
 import { DataSource} from '@angular/cdk/collections';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 import { CdkTableModule } from '@angular/cdk/table';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -18,6 +18,7 @@ import { MatAutocompleteModule,
   MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule,
+  MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
@@ -50,13 +51,86 @@ import { SortTableComponent } from './tables/sort-table/sort-table.component';
 import { SortPaginateTableComponent } from './tables/sort-paginate-table/sort-paginate-table.component';
 import { FilterTableComponent } from './tables/filter-table/filter-table.component';
 
+import { DataService } from  './tables/data.service';
+import { ListChipsPersonComponent } from './tables/list-chips-person/list-chips-person.component';
+import { TagComponent } from './tables/list-chips-person/list-chips-person-tag/list-chips-person-tag.component';
+
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+// import {FlexLayoutModule} from '@angular/flex-layout';
+
+import {A11yModule} from '@angular/cdk/a11y';
+import {BidiModule} from '@angular/cdk/bidi';
+import {ObserversModule} from '@angular/cdk/observers';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {PlatformModule} from '@angular/cdk/platform';
+import {PortalModule} from '@angular/cdk/portal';
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+
+
+/**
+ * NgModule that includes all Material modules that are required to serve 
+ * the Plunker.
+ */
+@NgModule({
+  exports: [
+    // CDK
+    A11yModule,
+    BidiModule,
+    ObserversModule,
+    OverlayModule,
+    PlatformModule,
+    PortalModule,
+    ScrollDispatchModule,
+    CdkStepperModule,
+    CdkTableModule,
+    
+    // Material
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+  ]
+})
+export class MaterialModule {}
+
 @NgModule({
   declarations: [
     AppComponent,
     BasicTableComponent,
     SortTableComponent,
     SortPaginateTableComponent,
-    FilterTableComponent
+    FilterTableComponent,
+    ListChipsPersonComponent,
+    TagComponent
   ],
   imports: [
     BrowserModule,
@@ -94,9 +168,17 @@ import { FilterTableComponent } from './tables/filter-table/filter-table.compone
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
+
+    BrowserModule,
+    CommonModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule
+    // FlexLayoutModule
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

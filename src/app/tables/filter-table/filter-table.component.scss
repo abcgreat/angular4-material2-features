@@ -1,5 +1,26 @@
 /* Structure */
 .example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+
+/* Structure */
+.example-container {
     display: flex;
     flex-direction: column;
     min-width: 300px;
@@ -8,20 +29,52 @@
   .example-header {
     min-height: 64px;
     display: flex;
-    align-items: baseline;
-    padding: 8px 24px 0;
+    align-items: center;
+    padding-left: 24px;
     font-size: 20px;
-    justify-content: space-between;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    flex-grow: 1;
-    margin-left: 32px;
   }
   
   .mat-table {
-    overflow: auto;
-    max-height: 500px;
+    display: table;
+    width: 100%;
+}
+
+
+.mat-header-row,  .mat-row {
+  display: table-row;
+  padding: 0;
+  border: none;
+
+}
+
+
+.mat-header-cell,  .mat-cell {
+  display: table-cell;
+  height: 48px;
+  vertical-align: middle;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mat-column-userName {
+  display: flex;
+  text-align: center;
+  } 
+
+
+  .cdk-column-filterUserId {
+    width: 15px;
+    text-align: right;
+    padding: 0;
   }
   
+
+  .cdk-column-filterColor {
+    width: 15px;
+    text-align: right;
+    padding: 0;
+  }
+  
+  .demo-chip-list {
+    width: 100%;
+  }

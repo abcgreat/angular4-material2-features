@@ -1,7 +1,18 @@
-import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit, ElementRef, forwardRef, OnChanges} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
+import {MatSort,
+  MatPaginator,
+  MatChipInputEvent,
+  MatChipsModule,
+  MatIconModule,
+  MatFormFieldModule,
+  MatListOptionChange,
+  MatListOption
+  } from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ENTER} from '@angular/cdk/keycodes';
 import {Observable} from 'rxjs/Observable';
+import { DataService } from '../data.service';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -9,39 +20,123 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
-/**
- * @title Table with filtering
- */
+const COMMA = 188;
+
 @Component({
   selector: 'app-filter-table',
   templateUrl: './filter-table.component.html',
   styleUrls: ['./filter-table.component.scss']
 })
 export class FilterTableComponent implements OnInit {
-  displayedColumns = ['userId', 'userName', 'progress', 'color'];
+
+  @ViewChild('filter') filter: ElementRef;
+  
+  visible: boolean = true;
+  selectable: boolean = true;
+  removable: boolean = true;
+  addOnBlur: boolean = true;
+
+
+  // Enter, comma
+  separatorKeysCodes = [ENTER, COMMA];
+  
+
+  fruits = [
+    { name: 'Lemon' },
+    { name: 'Lime' },
+    { name: 'Apple' },
+  ];
+
+  constructor(private dataService:DataService) {
+    
+      }
+
+  add(event: MatChipInputEvent): void {
+    let input = event.input;
+    let value = event.value;
+
+    // Add our person
+    if ((value || '').trim()) {
+      this.fruits.push({ name: value.trim() });
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(fruit: any): void {
+    let index = this.fruits.indexOf(fruit);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+    }
+  }
+
+  addFromOutside(): void  {
+    console.log('Just a dummy fruit');
+    this.fruits.push({ name: 'Just a dummy fruit' });
+  }
+
+  // onOptionSelectionChange: (event?: MatListOptionChange) => void = () => {
+  //   console.log('Just a dummy fruit');
+  //   this.fruits.push({ name: 'Just a dummy fruit' });
+  // }
+
+
+  onOptionSelectionChange (item: string): void {
+    console.log('Just a dummy fruit');
+    this.fruits.push({ name: 'Just a dummy fruit' });
+  }
+
+
+  displayedColumns = ['filterUserId', 'userId', 'userName', 'progress', 'filterColor', 'color'];
+
+  // displayedColumns = ['userId', 'userName', 'progress', 'color'];
+
+
   exampleDatabase = new ExampleDatabase();
   dataSource: ExampleDataSource | null;
 
-  @ViewChild('filter') filter: ElementRef;
+  typesOfShoes = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+
+
+  abcdCOLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
+  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
+
+  abcdNAMES = ['Maia AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Asher', 'Olivia AAAAAAAAAAAAAAAAAAAAAA', 'Atticus', 'Amelia', 'Jack',
+  'Charlotte', 'Theodore', 'Isla AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Oliver', 'Isabella AAAAAAAAAAAAAAAAAAAAAA', 'Jasper',
+  'Cora', 'Levi', 'Violet', 'Arthur AAAAAAAAAAAAAAAAAAAAAA', 'Mia', 'Thomas', 'Elizabeth'];
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  someProperty:string = '';
 
   ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort,this.paginator,this.filter);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          this.dataSource.filter = this.filter.nativeElement.value;
-        });
+    .debounceTime(150)
+    .distinctUntilChanged()
+    .subscribe(() => {
+      if (!this.dataSource) { return; }
+      this.dataSource.filter = this.filter.nativeElement.value;
+    });
+
+    console.log(this.dataService.cars);
+    
+        this.someProperty = this.dataService.myData();
+
   }
 }
 
 /** Constants used to fill up our data base. */
 const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
   'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
+const NAMES = ['Maia AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Asher', 'Olivia AAAAAAAAAAAAAAAAAAAAAA', 'Atticus', 'Amelia', 'Jack',
+  'Charlotte', 'Theodore', 'Isla AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Oliver', 'Isabella AAAAAAAAAAAAAAAAAAAAAA', 'Jasper',
+  'Cora', 'Levi', 'Violet', 'Arthur AAAAAAAAAAAAAAAAAAAAAA', 'Mia', 'Thomas', 'Elizabeth'];
 
 export interface UserData {
   id: string;
@@ -92,10 +187,14 @@ export class ExampleDatabase {
  */
 export class ExampleDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
+  _colorsChange = new BehaviorSubject('');
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-  constructor(private _exampleDatabase: ExampleDatabase) {
+  get colors(): string { return this._colorsChange.value; }
+  set colors(colors: string) { this._colorsChange.next(colors); }
+
+  constructor(private _exampleDatabase: ExampleDatabase, private _sort: MatSort, private _paginator: MatPaginator, private _filter: ElementRef) {
     super();
   }
 
@@ -103,16 +202,62 @@ export class ExampleDataSource extends DataSource<any> {
   connect(): Observable<UserData[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
+      this._sort.sortChange,
+      this._paginator.page,
       this._filterChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      return this._exampleDatabase.data.slice().filter((item: UserData) => {
-        const searchStr = (item.name + item.color + item.id.toString() + item.progress).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+      // const data = this.getSortedData().slice();
+      
+      const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
+        let searchStr = '';
+        searchStr = (item.name).toLowerCase();
+
+        // if (this.filter.startsWith('Name:')){
+        //   searchStr = (item.name).toLowerCase();
+        //   //this.filter = this.filter.substr(this.filter.indexOf('Name:'),this.filter.length);
+        // } else if (this.filter.startsWith('Color:')){
+        //   searchStr = (item.color).toLowerCase();
+        // } else if (this.filter.startsWith('Progress:')){
+        //   searchStr = (item.progress).toLowerCase();
+        // } else if (this.filter.startsWith('ID:')){
+        //   searchStr = (item.id).toLowerCase();
+        // }     
+
+        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
+      
+      // Grab the page's slice of data.
+      const startIndex = 0; // this._paginator.pageIndex * this._paginator.pageSize;
+      return data.splice(startIndex, this._paginator.pageSize);
+
     });
   }
 
   disconnect() {}
+
+  /** Returns a sorted copy of the database data. */
+  getSortedData(): UserData[] {
+    const data = this._exampleDatabase.data.slice();
+    if (!this._sort.active || this._sort.direction === '') { return data; }
+
+    return data.sort((a, b) => {
+      let propertyA: number|string = '';
+      let propertyB: number|string = '';
+
+      switch (this._sort.active) {
+        case 'filterUserId': break;
+        case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
+        case 'userName': [propertyA, propertyB] = [a.name, b.name]; break;
+        case 'progress': [propertyA, propertyB] = [a.progress, b.progress]; break;
+        case 'color': [propertyA, propertyB] = [a.color, b.color]; break;
+      }
+
+      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+
+      return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
+    });
+  }
 }
