@@ -1,0 +1,42 @@
+<p>
+  list-chips-list-option-tag works!
+</p>
+
+
+<mat-form-field fxFlex="100">
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let tag of _value; let last = last"
+        (remove)="remove(tag, chipInput)"
+        (keydown.ArrowRight)="last && selectInput($event, chipInput)">
+      {{tag.text}}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input [matChipInputFor]="chipList"
+           [matChipInputAddOnBlur]="false"
+           [matAutocomplete]="auto"
+           (keydown.enter)="addTextChip(chipInput)"
+           (input)="textChanged(chipInput.value)"
+           autofocus
+           #chipInput />
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete"
+                    [displayWith]="displayFn"
+                    (optionSelected)="add($event, chipInput)">
+
+    <!-- <mat-selection-list #shoes>
+      <mat-list-option *ngFor="let tag of filteredSources">
+        {{tag}}
+      </mat-list-option>
+    </mat-selection-list> -->
+
+    <!-- <mat-list-option *ngFor="let tag of filteredSources" data-ng-value="">
+      {{tag.text}}
+    </mat-list-option> -->
+
+    <mat-option *ngFor="let tag of filteredSources" [value]="tag.id">
+      <span>{{ tag.text }}</span>
+    </mat-option>
+
+
+  </mat-autocomplete>
+</mat-form-field>
