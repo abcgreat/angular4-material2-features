@@ -132,8 +132,9 @@
 <mat-menu #menuColor="matMenu">
     
         <mat-selection-list #colorsList>
-            <mat-list-option *ngFor="let color of abcdCOLORS">
-              {{color}}
+            <mat-list-option *ngFor="let color of source" 
+              [checkboxPosition]="before" [value]="color.id">
+              {{color.text}}
             </mat-list-option>
           </mat-selection-list>
           
