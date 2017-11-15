@@ -24,6 +24,12 @@ import 'rxjs/add/observable/fromEvent';
 
 const COMMA = 188;
 
+export interface Tag {
+  id: number;
+  text: string;
+}
+
+
 @Component({
   selector: 'app-filter-table',
   templateUrl: './filter-table.component.html',
@@ -128,6 +134,11 @@ export class FilterTableComponent implements OnInit {
   removable: boolean = true;
   addOnBlur: boolean = true;
 
+  source: Tag[] = [
+    {'id': 1, 'text': 'flying'},
+    {'id': 2, 'text': 'home'},
+    {'id': 3, 'text': 'coding'}
+    ];
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
@@ -139,6 +150,7 @@ export class FilterTableComponent implements OnInit {
     { name: 'Apple' },
   ];
 
+  
   constructor(private dataService:DataService) {
     
       }

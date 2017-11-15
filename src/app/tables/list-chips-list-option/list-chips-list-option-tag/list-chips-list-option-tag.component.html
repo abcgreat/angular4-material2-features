@@ -19,24 +19,31 @@
            autofocus
            #chipInput />
   </mat-chip-list>
+
+  
+  <mat-selection-list #shoes>
+    <mat-list-option *ngFor="let tag of filteredSources">
+      {{tag.text}}
+    </mat-list-option>
+  </mat-selection-list>
+
   <mat-autocomplete #auto="matAutocomplete"
                     [displayWith]="displayFn"
                     (optionSelected)="add($event, chipInput)">
 
-    <!-- <mat-selection-list #shoes>
-      <mat-list-option *ngFor="let tag of filteredSources">
-        {{tag}}
-      </mat-list-option>
-    </mat-selection-list> -->
 
     <!-- <mat-list-option *ngFor="let tag of filteredSources" data-ng-value="">
       {{tag.text}}
     </mat-list-option> -->
 
-    <mat-option *ngFor="let tag of filteredSources" [value]="tag.id">
+    <!-- <mat-option *ngFor="let tag of filteredSources" [value]="tag.id">
       <span>{{ tag.text }}</span>
-    </mat-option>
+    </mat-option> -->
 
+    
+    <!-- <mat-option *ngFor="let tag of filteredSources" [value]="tag.id">
+      {{ tag.text }}
+    </mat-option> -->
 
   </mat-autocomplete>
 </mat-form-field>
