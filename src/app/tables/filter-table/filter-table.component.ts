@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, ElementRef, forwardRef, OnChanges} from '@angular/core';
+import {Component, ViewChild, OnInit, ElementRef, forwardRef, OnChanges, Output, Input, EventEmitter, QueryList} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {MatSort,
   MatPaginator,
@@ -7,7 +7,9 @@ import {MatSort,
   MatIconModule,
   MatFormFieldModule,
   MatListOptionChange,
-  MatListOption
+  MatListOption,
+  MatSelectModule,
+  MatListModule
   } from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ENTER} from '@angular/cdk/keycodes';
@@ -28,9 +30,99 @@ const COMMA = 188;
   styleUrls: ['./filter-table.component.scss']
 })
 export class FilterTableComponent implements OnInit {
+// grab the MatListOption instances..
+@ViewChild(MatListOption) options: QueryList<MatListOption>;
 
   @ViewChild('filter') filter: ElementRef;
-  
+
+  testValue: true;
+
+    config = {
+      data: [
+        {
+          title: 'Title1',
+        },
+        {
+          title: 'Title2',
+        },
+        {
+          title: 'Title3',
+        },
+        {
+          title: 'Title4',
+        }
+      ]
+    };
+
+
+  onDeselected(value: any) {
+    console.log('deselected event => ', value);
+  }
+
+  onSelectChange(value: any) {
+    console.log('change => ', value);
+    console.log( value);
+
+    console.log( value.valueOf());
+
+    console.log( value);
+
+    if (value.selected) {
+      this.fruits.push({ name: value.source.value.toString()});
+      } else {
+      this.remove(<any>{ name: value.source.value.toString()});
+    }
+
+    // this.fruits.push({ name: value.trim() });
+
+    // this.fruits.push({ name: 'value.trim() '});
+
+    // if (value.selected) {
+    //   this.fruits.push({ name: 'value1'});
+    //   } else {
+    //   this.remove('value1');
+    // }
+
+    // if (value.selected) {
+    //   this.fruits.push({ name: value.source.value.toString()});
+    //   } else {
+    //   this.remove(value.source.value.toString());
+    // }
+
+
+    console.log('change => !End!');
+  }
+
+  submit(rows) {
+    console.log(rows.selectedOptions.selected.map(elements => {
+      return elements._getHostElement().innerText;
+    }));
+  }
+
+  displayedColumns = ['filterUserId', 'userId', 'userName', 'progress', 'filterColor', 'color'];
+
+    // displayedColumns = ['userId', 'userName', 'progress', 'color'];
+
+
+    exampleDatabase = new ExampleDatabase();
+    dataSource: ExampleDataSource | null;
+
+    typesOfShoes = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+
+
+
+    abcdCOLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
+    'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
+
+    abcdNAMES = ['Maia AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Asher', 'Olivia AAAAAAAAAAAAAAAAAAAAAA', 'Atticus', 'Amelia', 'Jack',
+    'Charlotte', 'Theodore', 'Isla AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Oliver', 'Isabella AAAAAAAAAAAAAAAAAAAAAA', 'Jasper',
+    'Cora', 'Levi', 'Violet', 'Arthur AAAAAAAAAAAAAAAAAAAAAA', 'Mia', 'Thomas', 'Elizabeth'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+    someProperty: string = '';
+
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
@@ -60,6 +152,9 @@ export class FilterTableComponent implements OnInit {
       this.fruits.push({ name: value.trim() });
     }
 
+    console.log('test this: this.filter.nativeElement = value.trim();');
+    this.filter.nativeElement = value.trim();
+
     // Reset the input value
     if (input) {
       input.value = '';
@@ -68,7 +163,8 @@ export class FilterTableComponent implements OnInit {
 
   remove(fruit: any): void {
     let index = this.fruits.indexOf(fruit);
-
+console.log(fruit);
+console.log(fruit.name);
     if (index >= 0) {
       this.fruits.splice(index, 1);
     }
@@ -91,31 +187,11 @@ export class FilterTableComponent implements OnInit {
   }
 
 
-  displayedColumns = ['filterUserId', 'userId', 'userName', 'progress', 'filterColor', 'color'];
-
-  // displayedColumns = ['userId', 'userName', 'progress', 'color'];
-
-
-  exampleDatabase = new ExampleDatabase();
-  dataSource: ExampleDataSource | null;
-
-  typesOfShoes = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
-
-
-  abcdCOLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-
-  abcdNAMES = ['Maia AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Asher', 'Olivia AAAAAAAAAAAAAAAAAAAAAA', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Oliver', 'Isabella AAAAAAAAAAAAAAAAAAAAAA', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur AAAAAAAAAAAAAAAAAAAAAA', 'Mia', 'Thomas', 'Elizabeth'];
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  someProperty:string = '';
 
   ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort,this.paginator,this.filter);
+    this.filter.nativeElement.value = 'lime';
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter);
+
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)
     .distinctUntilChanged()
@@ -125,9 +201,14 @@ export class FilterTableComponent implements OnInit {
     });
 
     console.log(this.dataService.cars);
-    
+
         this.someProperty = this.dataService.myData();
 
+  }
+
+  //For List Option event
+  public change() {
+    console.log('This should fire on select change')
   }
 }
 
@@ -212,8 +293,9 @@ export class ExampleDataSource extends DataSource<any> {
       
       const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
         let searchStr = '';
-        searchStr = (item.name).toLowerCase();
-
+        searchStr = (item.color).toLowerCase();
+        console.log('show item.name:' + item.color);
+console.log('show filter value:' + this.filter);
         // if (this.filter.startsWith('Name:')){
         //   searchStr = (item.name).toLowerCase();
         //   //this.filter = this.filter.substr(this.filter.indexOf('Name:'),this.filter.length);
@@ -225,7 +307,7 @@ export class ExampleDataSource extends DataSource<any> {
         //   searchStr = (item.id).toLowerCase();
         // }     
 
-        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
       
       // Grab the page's slice of data.
