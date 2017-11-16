@@ -131,18 +131,11 @@
 <mat-menu #menuColor="matMenu">
     
         <mat-selection-list #colorsList>
-<<<<<<< HEAD
             <mat-list-option *ngFor="let color of abcdCOLORS"
             [checkboxPosition]="before"  
             [value]="color"
-            (selectionChange)="onSelectChange($event)"
-            (deselected)="onDeselected($event)">
+            (selectionChange)="onSelectChange($event)">
               {{color}}
-=======
-            <mat-list-option *ngFor="let color of source" 
-              [checkboxPosition]="before" [value]="color.id">
-              {{color.text}}
->>>>>>> 52af35f73c0e809f2092bb126fe965b6284a02d6
             </mat-list-option>
           </mat-selection-list>
           

@@ -165,7 +165,14 @@ export class FilterTableComponent implements OnInit {
     }
 
     console.log('test this: this.filter.nativeElement = value.trim();');
+
+    
+
     this.filter.nativeElement = value.trim();
+
+
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter);
+    
 
     // Reset the input value
     if (input) {
