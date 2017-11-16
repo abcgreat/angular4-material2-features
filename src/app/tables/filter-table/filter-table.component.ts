@@ -9,7 +9,8 @@ import {MatSort,
   MatListOptionChange,
   MatListOption,
   MatSelectModule,
-  MatListModule
+  MatListModule,
+  MatChipList
   } from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ENTER} from '@angular/cdk/keycodes';
@@ -38,6 +39,7 @@ export interface Tag {
 export class FilterTableComponent implements OnInit {
 // grab the MatListOption instances..
 @ViewChild(MatListOption) options: QueryList<MatListOption>;
+@ViewChild(MatChipList) chips: MatChipList;
 
   @ViewChild('filter') filter: ElementRef;
 
@@ -78,6 +80,9 @@ export class FilterTableComponent implements OnInit {
       } else {
       this.remove(<any>{ name: value.source.value.toString()});
     }
+
+    //Use chips to use on filtering
+    console.log(this.chips);
 
     // this.fruits.push({ name: value.trim() });
 
@@ -168,10 +173,10 @@ export class FilterTableComponent implements OnInit {
 
     
 
-    this.filter.nativeElement = value.trim();
+    // this.filter.nativeElement = value.trim();
 
 
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips);
     
 
     // Reset the input value
@@ -208,8 +213,8 @@ console.log(fruit.name);
 
 
   ngOnInit() {
-    this.filter.nativeElement.value = 'lime';
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter);
+    // this.filter.nativeElement.value = 'lime';
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips);
 
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)
@@ -218,6 +223,14 @@ console.log(fruit.name);
       if (!this.dataSource) { return; }
       this.dataSource.filter = this.filter.nativeElement.value;
     });
+
+    // Observable.fromEvent(this.chips._keydown())
+    // .debounceTime(150)
+    // .distinctUntilChanged()
+    // .subscribe(() => {
+    //   if (!this.dataSource) { return; }
+    //   this.dataSource.filter = this.filter.nativeElement.value;
+    // });
 
     console.log(this.dataService.cars);
 
@@ -294,7 +307,11 @@ export class ExampleDataSource extends DataSource<any> {
   get colors(): string { return this._colorsChange.value; }
   set colors(colors: string) { this._colorsChange.next(colors); }
 
-  constructor(private _exampleDatabase: ExampleDatabase, private _sort: MatSort, private _paginator: MatPaginator, private _filter: ElementRef) {
+  constructor(private _exampleDatabase: ExampleDatabase,
+    private _sort: MatSort,
+    private _paginator: MatPaginator,
+    private _filter: ElementRef,
+    private _chips: MatChipList) {
     super();
   }
 
@@ -305,6 +322,7 @@ export class ExampleDataSource extends DataSource<any> {
       this._sort.sortChange,
       this._paginator.page,
       this._filterChange,
+      this._chips.change,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
@@ -315,6 +333,7 @@ export class ExampleDataSource extends DataSource<any> {
         searchStr = (item.color).toLowerCase();
         console.log('show item.name:' + item.color);
 console.log('show filter value:' + this.filter);
+console.log('_chips' + this._chips);
         // if (this.filter.startsWith('Name:')){
         //   searchStr = (item.name).toLowerCase();
         //   //this.filter = this.filter.substr(this.filter.indexOf('Name:'),this.filter.length);
