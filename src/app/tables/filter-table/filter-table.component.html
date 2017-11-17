@@ -11,14 +11,15 @@
 
     <mat-form-field class="demo-chip-list">
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+          <mat-chip #eachChip *ngFor="let fruit of fruits" [selectable]="selectable"
                    [removable]="removable" (remove)="remove(fruit)">
             {{fruit.name}}
             <mat-icon matChipRemove *ngIf="removable">
               cancel
             </mat-icon>
           </mat-chip>
-          <input placeholder="New fruit..."
+          <input #chip
+                 placeholder="New fruit..."
                  [matChipInputFor]="chipList"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
@@ -48,16 +49,13 @@
       <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
     </ng-container>
 
-    <!-- Progress Column -->
-    <ng-container matColumnDef="progress">
-
-      <mat-header-cell *matHeaderCellDef mat-sort-header>      
-        <button mat-icon-button [matMenuTriggerFor]="menuTest"> <i class="fa fa-filter"></i>
-      </button>   Progress 
-
-
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+    <!-- filterUserName Column -->
+    <ng-container matColumnDef="filterUserName">  
+      <mat-header-cell *matHeaderCellDef style="text-align:right;">
+        <button mat-icon-button [matMenuTriggerFor]="menuUserName" (mouseout)="formUserNameInput.focus()"> <i class="fa fa-filter"></i>
+        </button>          
+      </mat-header-cell>  
+      <mat-cell *matCellDef="let row"></mat-cell>
     </ng-container>
 
     <!-- Name Column -->
@@ -67,6 +65,19 @@
     </ng-container>
 
 
+    <!-- Progress Column -->
+    <ng-container matColumnDef="progress">
+      
+            <mat-header-cell *matHeaderCellDef mat-sort-header>      
+              <button mat-icon-button [matMenuTriggerFor]="menuTest"> <i class="fa fa-filter"></i>
+            </button>   Progress 
+      
+      
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+          </ng-container>
+      
+      
     <!-- filterColor Column -->
     <ng-container matColumnDef="filterColor">  
         <mat-header-cell *matHeaderCellDef style="text-align:right;">
@@ -102,11 +113,12 @@
         <mat-list-option 
         
         [checkboxPosition]="before"  
-        >
+        (click)="$event.stopPropagation()">
           {{shoe}}
         </mat-list-option>
       </mat-selection-list>
       
+    <button>Close</button>
   
   </mat-menu>
   
@@ -114,7 +126,7 @@
 
   <mat-selection-list #shoes>
       <mat-list-option *ngFor="let shoe of typesOfShoes"
-      [checkboxPosition]="before"  >
+      [checkboxPosition]="before" (click)="$event.stopPropagation()">
         {{shoe}}
       </mat-list-option>
     </mat-selection-list>
@@ -123,6 +135,7 @@
       Options selected: {{shoes.selectedOptions.selected.length}}
     </p>
 
+    <button>Close</button>
 </mat-menu>
 
 
@@ -134,7 +147,7 @@
             <mat-list-option *ngFor="let color of abcdCOLORS"
             [checkboxPosition]="before"  
             [value]="color"
-            (selectionChange)="onSelectChange($event)">
+            (selectionChange)="onSelectChange($event)" (click)="$event.stopPropagation()">
               {{color}}
             </mat-list-option>
           </mat-selection-list>
@@ -143,5 +156,23 @@
             Options selected: {{colorsList.selectedOptions.selected.length}}
           </p>
     
+          <button>Close</button>
   </mat-menu>
+
+
+  <mat-menu #menuUserName="matMenu">
+    
+    <mat-form-field id="formUserName">
+      <input id="formUserNameInput" matInput placeholder="Filter on Name column" (click)="$event.stopPropagation()">
+    </mat-form-field>
+    <br />
+    <button mat-raised-button color="primary">Apply</button>
+  </mat-menu>
+
+
+  <!-- <mat-form-field #menuUserName="matMenu">
+    <input matInput placeholder="Input">
+  </mat-form-field> -->
+
+
 </div>

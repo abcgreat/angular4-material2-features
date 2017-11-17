@@ -1,4 +1,5 @@
-import {Component, ViewChild, OnInit, ElementRef, forwardRef, OnChanges, Output, Input, EventEmitter, QueryList} from '@angular/core';
+import {Component, ViewChild, OnInit, ElementRef, forwardRef, OnChanges,
+  Output, Input, EventEmitter, QueryList, AfterViewInit} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {MatSort,
   MatPaginator,
@@ -10,7 +11,8 @@ import {MatSort,
   MatListOption,
   MatSelectModule,
   MatListModule,
-  MatChipList
+  MatChipList,
+  MatButtonModule
   } from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ENTER} from '@angular/cdk/keycodes';
@@ -36,12 +38,13 @@ export interface Tag {
   templateUrl: './filter-table.component.html',
   styleUrls: ['./filter-table.component.scss']
 })
-export class FilterTableComponent implements OnInit {
+export class FilterTableComponent implements OnInit, AfterViewInit  {
 // grab the MatListOption instances..
 @ViewChild(MatListOption) options: QueryList<MatListOption>;
 @ViewChild(MatChipList) chips: MatChipList;
 
   @ViewChild('filter') filter: ElementRef;
+  @ViewChild('chips') eachChip: ElementRef;
 
   testValue: true;
 
@@ -110,7 +113,7 @@ export class FilterTableComponent implements OnInit {
     }));
   }
 
-  displayedColumns = ['filterUserId', 'userId', 'userName', 'progress', 'filterColor', 'color'];
+  displayedColumns = ['filterUserId', 'userId', 'filterUserName', 'userName', 'progress', 'filterColor', 'color'];
 
     // displayedColumns = ['userId', 'userName', 'progress', 'color'];
 
@@ -156,7 +159,7 @@ export class FilterTableComponent implements OnInit {
   ];
 
   
-  constructor(private dataService:DataService) {
+  constructor(private dataService: DataService) {
     
       }
 
@@ -171,7 +174,8 @@ export class FilterTableComponent implements OnInit {
 
     console.log('test this: this.filter.nativeElement = value.trim();');
 
-    
+    console.log('adding a chip');
+    console.log(value);
 
     // this.filter.nativeElement = value.trim();
 
@@ -224,6 +228,17 @@ console.log(fruit.name);
       this.dataSource.filter = this.filter.nativeElement.value;
     });
 
+
+
+    // Observable.fromEvent(this.eachChip.nativeElement, 'change')
+    // .debounceTime(150)
+    // .distinctUntilChanged()
+    // .subscribe(() => {
+    //   if (!this.dataSource) { return; }
+    //   this.dataSource.filter = this.eachChip.nativeElement.value;
+    // });
+
+
     // Observable.fromEvent(this.chips._keydown())
     // .debounceTime(150)
     // .distinctUntilChanged()
@@ -235,6 +250,14 @@ console.log(fruit.name);
     console.log(this.dataService.cars);
 
         this.someProperty = this.dataService.myData();
+
+  }
+
+  
+  ngAfterViewInit() {
+    // let buttonStream$ = Observable.fromEvent(this.chips, 'change')
+    //     .subscribe(res => console.log(res));
+    let abcd = 'abcd';
 
   }
 
@@ -301,8 +324,15 @@ export class ExampleDatabase {
 export class ExampleDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
   _colorsChange = new BehaviorSubject('');
+  
+  _chipsChange = new BehaviorSubject('');
+
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
+
+  
+  // get chip(): string { return this._chipsChange.value; }
+  // set chip(chip: string) { this._filterChange.next(filter); }
 
   get colors(): string { return this._colorsChange.value; }
   set colors(colors: string) { this._colorsChange.next(colors); }
@@ -328,12 +358,15 @@ export class ExampleDataSource extends DataSource<any> {
     return Observable.merge(...displayDataChanges).map(() => {
       // const data = this.getSortedData().slice();
       
+      console.log('Got into Observable.merge(...displayDataChanges).map(() => ');
+
       const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
         let searchStr = '';
         searchStr = (item.color).toLowerCase();
         console.log('show item.name:' + item.color);
-console.log('show filter value:' + this.filter);
-console.log('_chips' + this._chips);
+        console.log('show filter value:' + this.filter);
+        console.log('_chips');
+        // console.log(this._chips);
         // if (this.filter.startsWith('Name:')){
         //   searchStr = (item.name).toLowerCase();
         //   //this.filter = this.filter.substr(this.filter.indexOf('Name:'),this.filter.length);
@@ -353,6 +386,7 @@ console.log('_chips' + this._chips);
       return data.splice(startIndex, this._paginator.pageSize);
 
     });
+    
   }
 
   disconnect() {}
