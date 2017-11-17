@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit, ElementRef, forwardRef, OnChanges,
-  Output, Input, EventEmitter, QueryList, AfterViewInit} from '@angular/core';
+  Output, Input, EventEmitter, QueryList, AfterViewInit, Renderer} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {MatSort,
   MatPaginator,
@@ -12,8 +12,16 @@ import {MatSort,
   MatSelectModule,
   MatListModule,
   MatChipList,
-  MatButtonModule
+  MatButtonModule,
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MAT_MENU_DEFAULT_OPTIONS
   } from '@angular/material';
+
+
+
+
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ENTER} from '@angular/cdk/keycodes';
 import {Observable} from 'rxjs/Observable';
@@ -45,6 +53,42 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild('chips') eachChip: ElementRef;
+
+  @ViewChild(MatMenuTrigger) notificationMenuBtn: MatMenuTrigger;
+
+  @ViewChild(MatMenuTrigger) notificationMenuUserNameBtn: MatMenuTrigger;
+
+  @ViewChild('formUserNameInput') formUserNameInput: ElementRef;
+
+
+
+  // focusUserName(formUserNameInput: Element) {
+  //   // formUserNameInput.cl.click();
+
+  //   // let event = new MouseEvent('click', {bubbles: true});
+  //   // //event.stopPropagation();
+  //   // this.renderer.invokeElementMethod(
+  //   //     this.formUserNameInput.nativeElement, 'dispatchEvent', [event]);
+
+  //   // this.formUserNameInput.nativeElement.click();
+  //   // this.formUserNameInput.nativeElement = true;
+  //   // this.myPanel.expanded = this.myPanel.expanded;
+  //   // // this.matIcon = this.myPanel.expanded ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
+  //   // setTimeout(() => {
+  //   //   this.myPanel.disabled = true;
+  //   // }, 100);
+  // }
+
+
+  // showImageBrowseDlg() {
+  //   // from http://stackoverflow.com/a/32010791/217408
+  //   let event = new MouseEvent('click', {bubbles: true});
+  //   event.stopPropagation();
+  //   this.renderer.invokeElementMethod(
+  //       this.fileInput.nativeElement, 'dispatchEvent', [event]);
+  // }
+
+
 
   testValue: true;
 
@@ -150,7 +194,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
-  
+
 
   fruits = [
     { name: 'Lemon' },
@@ -158,9 +202,9 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     { name: 'Apple' },
   ];
 
-  
-  constructor(private dataService: DataService) {
-    
+
+  constructor(private dataService: DataService, private renderer: Renderer) {
+
       }
 
   add(event: MatChipInputEvent): void {
@@ -181,7 +225,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
 
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips);
-    
+
 
     // Reset the input value
     if (input) {
@@ -253,13 +297,44 @@ console.log(fruit.name);
 
   }
 
-  
-  ngAfterViewInit() {
-    // let buttonStream$ = Observable.fromEvent(this.chips, 'change')
-    //     .subscribe(res => console.log(res));
-    let abcd = 'abcd';
 
+  onOpenMenu(menu: any): void {
+    // console.log(menu);
+    console.log('inside of onOpenMenu(menu: any): void');
   }
+
+  ngAfterViewInit() {
+
+
+    this.notificationMenuBtn.onMenuOpen.subscribe(() => {
+      console.log('method 1');
+      //this.formUserNameInput.nativeElement.focus();
+    });
+
+    this.notificationMenuUserNameBtn.menuOpened.subscribe(() => {
+      console.log('method 1.1');
+      //this.formUserNameInput.nativeElement.focus();
+    });
+  }
+
+  menuHasOpened() {
+    console.log('method 2');
+  }
+
+
+  focusUserName(value: Element) {
+    // // do something
+    // this.formUserNameInput.nativeElement.click();
+    //setTimeout(() => {formUserNameInput.focus();}, 500);
+    console.log('it is: focusUserName()');
+    // this.formUserNameInput.focus();
+// value.innerHTML = 'Clicked';
+// value.innerHTML
+    // setTimeout('this.formUserNameInput.nativeElement.click();', 5000);
+    // this.formUserNameInput.nativeElement
+    // this.formUserNameInput.nativeElement.click(); //innerHTML = '';
+  }
+
 
   //For List Option event
   public change() {
@@ -324,13 +399,13 @@ export class ExampleDatabase {
 export class ExampleDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
   _colorsChange = new BehaviorSubject('');
-  
+
   _chipsChange = new BehaviorSubject('');
 
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-  
+
   // get chip(): string { return this._chipsChange.value; }
   // set chip(chip: string) { this._filterChange.next(filter); }
 
@@ -357,7 +432,7 @@ export class ExampleDataSource extends DataSource<any> {
 
     return Observable.merge(...displayDataChanges).map(() => {
       // const data = this.getSortedData().slice();
-      
+
       console.log('Got into Observable.merge(...displayDataChanges).map(() => ');
 
       const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
@@ -376,17 +451,17 @@ export class ExampleDataSource extends DataSource<any> {
         //   searchStr = (item.progress).toLowerCase();
         // } else if (this.filter.startsWith('ID:')){
         //   searchStr = (item.id).toLowerCase();
-        // }     
+        // }
 
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
-      
+
       // Grab the page's slice of data.
       const startIndex = 0; // this._paginator.pageIndex * this._paginator.pageSize;
       return data.splice(startIndex, this._paginator.pageSize);
 
     });
-    
+
   }
 
   disconnect() {}

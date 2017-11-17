@@ -36,7 +36,7 @@
     <!-- filterUserId Column -->
     <ng-container matColumnDef="filterUserId">  
       <mat-header-cell *matHeaderCellDef style="text-align:center;">
-        <button mat-icon-button [matMenuTriggerFor]="menu"> <i class="fa fa-filter"></i>
+        <button mat-icon-button #notificationMenuBtn [matMenuTriggerFor]="menu"> <i class="fa fa-filter"></i>
         </button>          
       </mat-header-cell>  
       <mat-cell *matCellDef="let row"></mat-cell>
@@ -52,7 +52,7 @@
     <!-- filterUserName Column -->
     <ng-container matColumnDef="filterUserName">  
       <mat-header-cell *matHeaderCellDef style="text-align:right;">
-        <button mat-icon-button [matMenuTriggerFor]="menuUserName" (mouseout)="formUserNameInput.focus()"> <i class="fa fa-filter"></i>
+        <button mat-icon-button #notificationMenuUserNameBtn #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menuUserName"> <i class="fa fa-filter"></i>
         </button>          
       </mat-header-cell>  
       <mat-cell *matCellDef="let row"></mat-cell>
@@ -162,9 +162,10 @@
 
   <mat-menu #menuUserName="matMenu">
     
-    <mat-form-field id="formUserName">
+    <mat-form-field>
       <input id="formUserNameInput" matInput placeholder="Filter on Name column" (click)="$event.stopPropagation()">
     </mat-form-field>
+
     <br />
     <button mat-raised-button color="primary">Apply</button>
   </mat-menu>
