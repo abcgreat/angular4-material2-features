@@ -52,7 +52,7 @@
     <!-- filterUserName Column -->
     <ng-container matColumnDef="filterUserName">  
       <mat-header-cell *matHeaderCellDef style="text-align:right;">
-        <button mat-icon-button #notificationMenuUserNameBtn #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menuUserName"> <i class="fa fa-filter"></i>
+        <button mat-icon-button #notificationMenuUserNameBtn #menuTrigger="matMenuTrigger" (click)="materialFocus($event)" [matMenuTriggerFor]="menuUserName"> <i class="fa fa-filter"></i>
         </button>          
       </mat-header-cell>  
       <mat-cell *matCellDef="let row"></mat-cell>

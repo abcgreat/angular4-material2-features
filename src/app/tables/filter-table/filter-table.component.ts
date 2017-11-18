@@ -16,7 +16,8 @@ import {MatSort,
   MatMenuTrigger,
   MatMenu,
   MatMenuItem,
-  MAT_MENU_DEFAULT_OPTIONS
+  MAT_MENU_DEFAULT_OPTIONS,
+  MatInput
   } from '@angular/material';
 
 
@@ -58,9 +59,11 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatMenuTrigger) notificationMenuUserNameBtn: MatMenuTrigger;
 
-  @ViewChild('formUserNameInput') formUserNameInput: ElementRef;
+  // @ViewChild('formUserNameInput') formUserNameInput: ElementRef;
 
+  @ViewChild('formUserNameInput', { read: MatInput }) formUserNameInput: MatInput;
 
+  @ViewChild(MatMenu) menuUserName: MatMenu;
 
   // focusUserName(formUserNameInput: Element) {
   //   // formUserNameInput.cl.click();
@@ -316,6 +319,25 @@ console.log(fruit.name);
       //this.formUserNameInput.nativeElement.focus();
     });
   }
+
+
+
+
+materialFocus(event) {
+  console.log('event');
+  // console.log(event);
+  // await this.formUserNameInput.focus();
+
+  // this.menuUserName.focusFirstItem();
+
+
+    setTimeout('this.formUserNameInput.focus()', 500);
+  // console.log(event);
+  //   setTimeout(_ => {
+  //       this.formUserNameInput.focus();
+  //   });
+}
+
 
   menuHasOpened() {
     console.log('method 2');
