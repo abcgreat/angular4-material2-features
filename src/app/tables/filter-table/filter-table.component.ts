@@ -20,9 +20,6 @@ import {MatSort,
   MatInput
   } from '@angular/material';
 
-
-
-
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ENTER} from '@angular/cdk/keycodes';
 import {Observable} from 'rxjs/Observable';
@@ -59,41 +56,11 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatMenuTrigger) notificationMenuUserNameBtn: MatMenuTrigger;
 
-  // @ViewChild('formUserNameInput') formUserNameInput: ElementRef;
-
   @ViewChild('formUserNameInput', { read: MatInput }) formUserNameInput: MatInput;
 
   @ViewChild('formUserNameInput') theFormUserNameInput: ElementRef;
 
   @ViewChild(MatMenu) menuUserName: MatMenu;
-
-  // focusUserName(formUserNameInput: Element) {
-  //   // formUserNameInput.cl.click();
-
-  //   // let event = new MouseEvent('click', {bubbles: true});
-  //   // //event.stopPropagation();
-  //   // this.renderer.invokeElementMethod(
-  //   //     this.formUserNameInput.nativeElement, 'dispatchEvent', [event]);
-
-  //   // this.formUserNameInput.nativeElement.click();
-  //   // this.formUserNameInput.nativeElement = true;
-  //   // this.myPanel.expanded = this.myPanel.expanded;
-  //   // // this.matIcon = this.myPanel.expanded ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
-  //   // setTimeout(() => {
-  //   //   this.myPanel.disabled = true;
-  //   // }, 100);
-  // }
-
-
-  // showImageBrowseDlg() {
-  //   // from http://stackoverflow.com/a/32010791/217408
-  //   let event = new MouseEvent('click', {bubbles: true});
-  //   event.stopPropagation();
-  //   this.renderer.invokeElementMethod(
-  //       this.fileInput.nativeElement, 'dispatchEvent', [event]);
-  // }
-
-
 
   testValue: true;
 
@@ -136,23 +103,6 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     //Use chips to use on filtering
     console.log(this.chips);
 
-    // this.fruits.push({ name: value.trim() });
-
-    // this.fruits.push({ name: 'value.trim() '});
-
-    // if (value.selected) {
-    //   this.fruits.push({ name: 'value1'});
-    //   } else {
-    //   this.remove('value1');
-    // }
-
-    // if (value.selected) {
-    //   this.fruits.push({ name: value.source.value.toString()});
-    //   } else {
-    //   this.remove(value.source.value.toString());
-    // }
-
-
     console.log('change => !End!');
   }
 
@@ -166,13 +116,10 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
     // displayedColumns = ['userId', 'userName', 'progress', 'color'];
 
-
     exampleDatabase = new ExampleDatabase();
     dataSource: ExampleDataSource | null;
 
     typesOfShoes = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
-
-
 
     abcdCOLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
     'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
@@ -226,11 +173,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log('adding a chip');
     console.log(value);
 
-    // this.filter.nativeElement = value.trim();
-
-
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips);
-
 
     // Reset the input value
     if (input) {
@@ -252,12 +195,6 @@ console.log(fruit.name);
     this.fruits.push({ name: 'Just a dummy fruit' });
   }
 
-  // onOptionSelectionChange: (event?: MatListOptionChange) => void = () => {
-  //   console.log('Just a dummy fruit');
-  //   this.fruits.push({ name: 'Just a dummy fruit' });
-  // }
-
-
   onOptionSelectionChange (item: string): void {
     console.log('Just a dummy fruit');
     this.fruits.push({ name: 'Just a dummy fruit' });
@@ -277,31 +214,10 @@ console.log(fruit.name);
       this.dataSource.filter = this.filter.nativeElement.value;
     });
 
-
-
-    // Observable.fromEvent(this.eachChip.nativeElement, 'change')
-    // .debounceTime(150)
-    // .distinctUntilChanged()
-    // .subscribe(() => {
-    //   if (!this.dataSource) { return; }
-    //   this.dataSource.filter = this.eachChip.nativeElement.value;
-    // });
-
-
-    // Observable.fromEvent(this.chips._keydown())
-    // .debounceTime(150)
-    // .distinctUntilChanged()
-    // .subscribe(() => {
-    //   if (!this.dataSource) { return; }
-    //   this.dataSource.filter = this.filter.nativeElement.value;
-    // });
-
     console.log(this.dataService.cars);
-
-        this.someProperty = this.dataService.myData();
+    this.someProperty = this.dataService.myData();
 
   }
-
 
   onOpenMenu(menu: any): void {
     // console.log(menu);
@@ -309,7 +225,6 @@ console.log(fruit.name);
   }
 
   ngAfterViewInit() {
-
 
     this.notificationMenuBtn.onMenuOpen.subscribe(() => {
       console.log('method 1');
@@ -322,16 +237,12 @@ console.log(fruit.name);
     });
   }
 
-
-
-
 materialFocus(event) {
   console.log('event');
 
   this.formUserNameInput.focus();
     // setTimeout('this.formUserNameInput.focus()', 500);
 }
-
 
   menuHasOpened() {
     console.log('method 2');
@@ -342,7 +253,6 @@ materialFocus(event) {
     console.log('it is: focusUserName()');
   }
 
-
   //For List Option event
   public change() {
     console.log('This should fire on select change');
@@ -350,11 +260,6 @@ materialFocus(event) {
 
   btnMenuUserNameClicked(event) {
     console.log('Inside of btnMenuUserNameClicked');
-    // console.log(event);
-    // console.log('value:');
-    // console.log(value);
-    // console.log(value.textContent);
-    // console.log(this.theFormUserNameInput);
     console.log(this.formUserNameInput);
     console.log(this.formUserNameInput.value);
     this.fruits.push({ name: 'Name:' + this.formUserNameInput.value.trim() });
