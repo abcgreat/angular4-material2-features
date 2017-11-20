@@ -61,6 +61,9 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   @ViewChild('formUserNameInput') theFormUserNameInput: ElementRef;
 
   @ViewChild(MatMenu) menuUserName: MatMenu;
+  // @ViewChild(string) filtering: string;
+
+  filtering: any;
 
   testValue: true;
 
@@ -173,7 +176,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log('adding a chip');
     console.log(value);
 
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips, this.filtering);
 
     // Reset the input value
     if (input) {
@@ -204,7 +207,7 @@ console.log(fruit.name);
 
   ngOnInit() {
     // this.filter.nativeElement.value = 'lime';
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips, this.filtering);
 
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)
@@ -263,6 +266,11 @@ materialFocus(event) {
     console.log(this.formUserNameInput);
     console.log(this.formUserNameInput.value);
     this.fruits.push({ name: 'Name:' + this.formUserNameInput.value.trim() });
+
+    this.filtering = 'Name:' + this.formUserNameInput.value.trim(); //'testing strings...';
+    console.log('testing strings...');
+    console.log(this.filtering);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips, this.filtering);
   }
 
 }
@@ -326,22 +334,26 @@ export class ExampleDataSource extends DataSource<any> {
   _colorsChange = new BehaviorSubject('');
 
   _chipsChange = new BehaviorSubject('');
+  _filteringChange = new BehaviorSubject('');
 
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-
-  // get chip(): string { return this._chipsChange.value; }
-  // set chip(chip: string) { this._filterChange.next(filter); }
+  get chips(): any { return this._chipsChange.value; }
+  set chips(chips: any) { this._chipsChange.next(chips); }
 
   get colors(): string { return this._colorsChange.value; }
   set colors(colors: string) { this._colorsChange.next(colors); }
+
+  get filtering(): string { return this._filteringChange.value; }
+  set filtering(filtering: string) { this._filteringChange.next(filtering); }
 
   constructor(private _exampleDatabase: ExampleDatabase,
     private _sort: MatSort,
     private _paginator: MatPaginator,
     private _filter: ElementRef,
-    private _chips: MatChipList) {
+    private _chips: MatChipList,
+    private _filtering: string) {
     super();
   }
 
@@ -353,6 +365,7 @@ export class ExampleDataSource extends DataSource<any> {
       this._paginator.page,
       this._filterChange,
       this._chips.change,
+      this._filteringChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
@@ -362,10 +375,52 @@ export class ExampleDataSource extends DataSource<any> {
 
       const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
         let searchStr = '';
-        searchStr = (item.color).toLowerCase();
-        console.log('show item.name:' + item.color);
-        console.log('show filter value:' + this.filter);
-        console.log('_chips');
+        searchStr = (item.name).toLowerCase();
+        // console.log('this._chips');
+        // console.log(this._chips);
+        // console.log('this._filtering');
+        // console.log(this._filtering);
+        // console.log(this.filtering);
+        // console.log(this._chips._chipInput._chipList.chips._results[0].value);
+
+        // console.log(this.chips.toLocaleLowerCase());
+        // console.log(this.chips);
+
+        // console.log(this._chips.value);
+        // console.log(this._chips.chips);
+        // console.log(this._chips.chips.length);
+        // console.log(this._chips.placeholder);
+        // console.log(this._chips.placeholder.length);
+        // console.log(this._chips.valueChange);
+
+
+        // console.log('show item.name:' + item.color);
+        // console.log('show filter value:' + this.filter);
+        // console.log('_chips');
+
+        console.log('this.tmpFilter (before): ');
+        console.log(tmpFilter);
+        // console.log(this.filtering);
+
+        var tmpFilter;
+        //  = this._filtering.toLowerCase();
+
+
+        if (this._filtering != null && this._filtering.startsWith('Name:')) {
+          // searchStr = (item.name).toLowerCase();
+
+          tmpFilter = this._filtering.toLowerCase();
+
+          tmpFilter = tmpFilter.substr(5, tmpFilter.length - 5);
+          // this._filtering = this._filtering.substr(this._filtering.indexOf('Name:'), this._filtering.length);
+
+          return searchStr.indexOf(tmpFilter) !== -1;
+          // console.log('Yes Name is in it.');
+
+        }
+        console.log('this.tmpFilter (after): ');
+        console.log(tmpFilter);
+
         // console.log(this._chips);
         // if (this.filter.startsWith('Name:')){
         //   searchStr = (item.name).toLowerCase();
@@ -378,7 +433,7 @@ export class ExampleDataSource extends DataSource<any> {
         //   searchStr = (item.id).toLowerCase();
         // }
 
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+        return true; //.indexOf(tmpFilter) !== -1;
       });
 
       // Grab the page's slice of data.
