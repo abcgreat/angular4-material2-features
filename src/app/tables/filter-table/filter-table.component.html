@@ -163,11 +163,11 @@
   <mat-menu #menuUserName="matMenu">
     
     <mat-form-field>
-      <input id="formUserNameInput" matInput placeholder="Filter on Name column" (click)="$event.stopPropagation()">
+      <input #formUserNameInput matInput placeholder="Filter on Name column" (click)="$event.stopPropagation()">
     </mat-form-field>
 
     <br />
-    <button mat-raised-button color="primary">Apply</button>
+    <button id="btnMenuUserName" mat-raised-button (click)="$event.stopPropagation();btnMenuUserNameClicked($event);" color="primary">Apply</button>
   </mat-menu>
 
 

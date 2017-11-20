@@ -63,6 +63,8 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
   @ViewChild('formUserNameInput', { read: MatInput }) formUserNameInput: MatInput;
 
+  @ViewChild('formUserNameInput') theFormUserNameInput: ElementRef;
+
   @ViewChild(MatMenu) menuUserName: MatMenu;
 
   // focusUserName(formUserNameInput: Element) {
@@ -198,12 +200,12 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
-
-  fruits = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
-  ];
+  fruits = [];
+  // fruits = [
+  //   { name: 'Lemon' },
+  //   { name: 'Lime' },
+  //   { name: 'Apple' },
+  // ];
 
 
   constructor(private dataService: DataService, private renderer: Renderer) {
@@ -325,17 +327,9 @@ console.log(fruit.name);
 
 materialFocus(event) {
   console.log('event');
-  // console.log(event);
-  // await this.formUserNameInput.focus();
 
-  // this.menuUserName.focusFirstItem();
-
-
-    setTimeout('this.formUserNameInput.focus()', 500);
-  // console.log(event);
-  //   setTimeout(_ => {
-  //       this.formUserNameInput.focus();
-  //   });
+  this.formUserNameInput.focus();
+    // setTimeout('this.formUserNameInput.focus()', 500);
 }
 
 
@@ -345,23 +339,27 @@ materialFocus(event) {
 
 
   focusUserName(value: Element) {
-    // // do something
-    // this.formUserNameInput.nativeElement.click();
-    //setTimeout(() => {formUserNameInput.focus();}, 500);
     console.log('it is: focusUserName()');
-    // this.formUserNameInput.focus();
-// value.innerHTML = 'Clicked';
-// value.innerHTML
-    // setTimeout('this.formUserNameInput.nativeElement.click();', 5000);
-    // this.formUserNameInput.nativeElement
-    // this.formUserNameInput.nativeElement.click(); //innerHTML = '';
   }
 
 
   //For List Option event
   public change() {
-    console.log('This should fire on select change')
+    console.log('This should fire on select change');
   }
+
+  btnMenuUserNameClicked(event) {
+    console.log('Inside of btnMenuUserNameClicked');
+    // console.log(event);
+    // console.log('value:');
+    // console.log(value);
+    // console.log(value.textContent);
+    // console.log(this.theFormUserNameInput);
+    console.log(this.formUserNameInput);
+    console.log(this.formUserNameInput.value);
+    this.fruits.push({ name: 'Name:' + this.formUserNameInput.value.trim() });
+  }
+
 }
 
 /** Constants used to fill up our data base. */
