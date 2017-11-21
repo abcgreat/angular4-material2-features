@@ -173,7 +173,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log(this.filteringColor);
 
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
-      this.filter, this.chips, this.filtering, this.filteringColor); // this.abcdCOLORS.join());
+      this.filter, this.chips, this.filtering, this.filteringColor);
 
     console.log('change => !End!');
   }
@@ -248,7 +248,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log(value);
     
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
-      this.filter, this.chips, this.filtering, this.abcdCOLORS.join());
+      this.filter, this.chips, this.filtering, this.filteringColor);
 
     // Reset the input value
     if (input) {
@@ -283,7 +283,7 @@ console.log(fruit.name);
   ngOnInit() {
     // this.filter.nativeElement.value = 'lime';
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
-      this.filter, this.chips, this.filtering, this.abcdCOLORS.join());
+      this.filter, this.chips, this.filtering, this.filteringColor);
 
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)
@@ -347,7 +347,7 @@ materialFocus(event) {
     console.log('testing strings...');
     console.log(this.filtering);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
-                              this.filter, this.chips, this.filtering, this.abcdCOLORS.join());
+      this.filter, this.chips, this.filtering, this.filteringColor);
   }
 
 }
@@ -477,10 +477,12 @@ export class ExampleDataSource extends DataSource<any> {
         //  = this._filtering.toLowerCase();
         var pass = false;
 
+        var doesNotHaveFilter = true;
+
 
         if (this._filtering != null && this._filtering.startsWith('Name:')) {
           // searchStr = (item.name).toLowerCase();
-
+          doesNotHaveFilter = false;
           tmpFilter = this._filtering.toLowerCase();
 
           tmpFilter = tmpFilter.substr(5, tmpFilter.length - 5);
@@ -489,24 +491,30 @@ export class ExampleDataSource extends DataSource<any> {
           pass = searchStr.indexOf(tmpFilter) !== -1;
 
           //return searchStr.indexOf(tmpFilter) !== -1;
-          // console.log('Yes Name is in it.');
-
+          console.log('Yes Name is in it.');
+          console.log(searchStr);
+          console.log('pass');
+          console.log(pass);
+          if (pass) {
+            return pass;
+          }
         }
 
+        // uncomment later
         if (!pass) {
           if (this._colors != null) {
-            // searchStr = (item.name).toLowerCase();
-  
+            doesNotHaveFilter = false;
             tmpFilter = this._colors.toLowerCase();
-  
-            // tmpFilter = tmpFilter.substr(5, tmpFilter.length - 5);
-            // this._filtering = this._filtering.substr(this._filtering.indexOf('Name:'), this._filtering.length);
-  
+
             pass = tmpFilter.indexOf(item.color) !== -1;
+            console.log('Yes Color is in it.');
+            console.log(this._colors);
   
-            //return searchStr.indexOf(tmpFilter) !== -1;
-            // console.log('Yes Name is in it.');
-  
+            console.log('pass');
+            console.log(pass);
+            if (pass) {
+              return pass;
+            }
           }
         }
 
@@ -526,7 +534,8 @@ export class ExampleDataSource extends DataSource<any> {
         // }
 
         //return true; //.indexOf(tmpFilter) !== -1;
-        return pass;
+        // return (pass || !doesNotHaveFilter) || (!pass && !doesNotHaveFilter);
+        return doesNotHaveFilter || pass;
       });
 
       // Grab the page's slice of data.
