@@ -98,12 +98,13 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log('change => ', value);
     console.log( value);
 
-    console.log( value.valueOf());
+    // console.log( value.valueOf());
 
-    console.log( value);
-
+    console.log( value.selected);
+    
     console.log('this.filteringColor');
     console.log(this.filteringColor);
+    console.log( value.source.value.toString());
 
 
     if (typeof(this.filteringColor) !== 'undefined') {
@@ -131,7 +132,33 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
       this.fruits.push({ name: value.source.value.toString()});
       this.filteringColor += value.source.value.toString() + ',';
       } else {
-      this.remove(<any>{ name: value.source.value.toString()});
+        this.filteringColor = this.filteringColor.split(value.source.value.toString())[0]
+        + this.filteringColor.split(value.source.value.toString())[1] ;
+        console.log('filteringColors after removing:');
+        console.log(this.filteringColor);
+        // this.fruits.splice()
+        // this.colorsList.options
+
+        
+        console.log(this.colorsList.options.find(x => x.selected).selectionList);
+        // let index = this.fruits.indexOf(value.source.value.toString());
+        
+        //     if (index >= 0) {
+        //       this.fruits.splice(index, 1);
+        //     }
+
+        console.log('this.fruits');
+        console.log(this.fruits);
+        console.log('value.source.value.toString()');
+        console.log(value.source.value.toString());
+        console.log('this.fruits.indexOf(value.source.value.toString())');
+        console.log(this.fruits.indexOf(<any>[{name: value.source.value.toString()}]));
+      // this.fruits.splice(this.fruits.indexOf(value.source.value.toString()), 1);
+      //console.log(this.fruits.splice(this.fruits.indexOf(value.source.value.toString()), 1));
+
+        // this.remove({ name: value.source.value.toString()});
+        // work on removing from the chips;
+        //this.fruits.splice(value.source.value.toString());
     }
 
     //Use chips to use on filtering
@@ -231,6 +258,9 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
   remove(fruit: any): void {
     let index = this.fruits.indexOf(fruit);
+
+console.log('remove(fruit: any): void ');
+console.log(fruit);
 console.log(fruit);
 console.log(fruit.name);
     if (index >= 0) {
@@ -435,12 +465,12 @@ export class ExampleDataSource extends DataSource<any> {
         // console.log('show filter value:' + this.filter);
         // console.log('_chips');
 
-        console.log('colors (before): ');
-        console.log(this.colors);
-        console.log(this._colors);
+        // console.log('colors (before): ');
+        // console.log(this.colors);
+        // console.log(this._colors);
 
-        console.log('this.tmpFilter (before): ');
-        console.log(tmpFilter);
+        // console.log('this.tmpFilter (before): ');
+        // console.log(tmpFilter);
         // console.log(this.filtering);
 
         var tmpFilter;
