@@ -17,7 +17,8 @@ import {MatSort,
   MatMenu,
   MatMenuItem,
   MAT_MENU_DEFAULT_OPTIONS,
-  MatInput
+  MatInput,
+  MatSelectionList
   } from '@angular/material';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -49,7 +50,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
 @ViewChild(MatChipList) chips: MatChipList;
 
-@ViewChild(MatListOption, { read: MatListOption }) colorsList: QueryList<MatListOption>;
+@ViewChild('colorsList', { read: MatSelectionList }) colorsList: MatSelectionList;
 // @ViewChild('colorsList') colorsList: QueryList<MatListOption>;
 
   @ViewChild('filter') filter: ElementRef;
@@ -66,6 +67,8 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   // @ViewChild(string) filtering: string;
 
   filtering: any;
+
+  filteringColor: string;
 
   testValue: true;
 
@@ -99,8 +102,34 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
     console.log( value);
 
+    console.log('this.filteringColor');
+    console.log(this.filteringColor);
+
+
+    if (typeof(this.filteringColor) !== 'undefined') {
+      console.log('1. variable is not undefined');
+    } else {
+      console.log('2. variable is undefined');
+      this.filteringColor = '';
+    }
+
+    // if (typeof(this.filteringColor) !== 'undefined') {
+    //   console.log('1. variable is not undefined');
+    // } else {
+    //   console.log('2. variable is undefined');
+    // }
+
+    // if (this.filteringColor === 'undefined') {
+    //   this.filteringColor = 'undefined-----------';
+    // }
+
+    // if (this.filteringColor === null) {
+    //   this.filteringColor = '';
+    // }
+
     if (value.selected) {
       this.fruits.push({ name: value.source.value.toString()});
+      this.filteringColor += value.source.value.toString() + ',';
       } else {
       this.remove(<any>{ name: value.source.value.toString()});
     }
@@ -109,15 +138,15 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log(this.chips);
 
     console.log('colors');
-    // console.log(this.abcdCOLORS.join());
-    // console.log(this.colorsList);
-    // console.log(this.colorsList.dirty);
-    console.log(this.colorsList);
-    // console.log(this.colorsList.nativeElement);
-    console.log(this.colorsList);
 
-    // this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
-    //   this.filter, this.chips, this.filtering, this.colorsList.toArray().toString()); // this.abcdCOLORS.join());
+    console.log(this.colorsList);
+    console.log(this.colorsList.options.find(x => x.selected).selectionList);
+
+    console.log('filteringColor');
+    console.log(this.filteringColor);
+
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
+      this.filter, this.chips, this.filtering, this.filteringColor); // this.abcdCOLORS.join());
 
     console.log('change => !End!');
   }
@@ -416,6 +445,7 @@ export class ExampleDataSource extends DataSource<any> {
 
         var tmpFilter;
         //  = this._filtering.toLowerCase();
+        var pass = false;
 
 
         if (this._filtering != null && this._filtering.startsWith('Name:')) {
@@ -426,12 +456,32 @@ export class ExampleDataSource extends DataSource<any> {
           tmpFilter = tmpFilter.substr(5, tmpFilter.length - 5);
           // this._filtering = this._filtering.substr(this._filtering.indexOf('Name:'), this._filtering.length);
 
-          return searchStr.indexOf(tmpFilter) !== -1;
+          pass = searchStr.indexOf(tmpFilter) !== -1;
+
+          //return searchStr.indexOf(tmpFilter) !== -1;
           // console.log('Yes Name is in it.');
 
         }
-        console.log('this.tmpFilter (after): ');
-        console.log(tmpFilter);
+
+        if (!pass) {
+          if (this._colors != null) {
+            // searchStr = (item.name).toLowerCase();
+  
+            tmpFilter = this._colors.toLowerCase();
+  
+            // tmpFilter = tmpFilter.substr(5, tmpFilter.length - 5);
+            // this._filtering = this._filtering.substr(this._filtering.indexOf('Name:'), this._filtering.length);
+  
+            pass = tmpFilter.indexOf(item.color) !== -1;
+  
+            //return searchStr.indexOf(tmpFilter) !== -1;
+            // console.log('Yes Name is in it.');
+  
+          }
+        }
+
+        // console.log('this.tmpFilter (after): ');
+        // console.log(tmpFilter);
 
         // console.log(this._chips);
         // if (this.filter.startsWith('Name:')){
@@ -445,7 +495,8 @@ export class ExampleDataSource extends DataSource<any> {
         //   searchStr = (item.id).toLowerCase();
         // }
 
-        return true; //.indexOf(tmpFilter) !== -1;
+        //return true; //.indexOf(tmpFilter) !== -1;
+        return pass;
       });
 
       // Grab the page's slice of data.
