@@ -46,8 +46,11 @@ export interface Tag {
 })
 export class FilterTableComponent implements OnInit, AfterViewInit  {
 // grab the MatListOption instances..
-@ViewChild(MatListOption) options: QueryList<MatListOption>;
+
 @ViewChild(MatChipList) chips: MatChipList;
+
+@ViewChild(MatListOption, { read: MatListOption }) colorsList: QueryList<MatListOption>;
+// @ViewChild('colorsList') colorsList: QueryList<MatListOption>;
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild('chips') eachChip: ElementRef;
@@ -57,7 +60,6 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   @ViewChild(MatMenuTrigger) notificationMenuUserNameBtn: MatMenuTrigger;
 
   @ViewChild('formUserNameInput', { read: MatInput }) formUserNameInput: MatInput;
-
   @ViewChild('formUserNameInput') theFormUserNameInput: ElementRef;
 
   @ViewChild(MatMenu) menuUserName: MatMenu;
@@ -106,8 +108,21 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     //Use chips to use on filtering
     console.log(this.chips);
 
+    console.log('colors');
+    // console.log(this.abcdCOLORS.join());
+    // console.log(this.colorsList);
+    // console.log(this.colorsList.dirty);
+    console.log(this.colorsList);
+    // console.log(this.colorsList.nativeElement);
+    console.log(this.colorsList);
+
+    // this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
+    //   this.filter, this.chips, this.filtering, this.colorsList.toArray().toString()); // this.abcdCOLORS.join());
+
     console.log('change => !End!');
   }
+
+
 
   submit(rows) {
     console.log(rows.selectedOptions.selected.map(elements => {
@@ -175,8 +190,9 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
     console.log('adding a chip');
     console.log(value);
-
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips, this.filtering);
+    
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
+      this.filter, this.chips, this.filtering, this.abcdCOLORS.join());
 
     // Reset the input value
     if (input) {
@@ -207,7 +223,8 @@ console.log(fruit.name);
 
   ngOnInit() {
     // this.filter.nativeElement.value = 'lime';
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips, this.filtering);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
+      this.filter, this.chips, this.filtering, this.abcdCOLORS.join());
 
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)
@@ -270,7 +287,8 @@ materialFocus(event) {
     this.filtering = 'Name:' + this.formUserNameInput.value.trim(); //'testing strings...';
     console.log('testing strings...');
     console.log(this.filtering);
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator, this.filter, this.chips, this.filtering);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
+                              this.filter, this.chips, this.filtering, this.abcdCOLORS.join());
   }
 
 }
@@ -345,15 +363,16 @@ export class ExampleDataSource extends DataSource<any> {
   get colors(): string { return this._colorsChange.value; }
   set colors(colors: string) { this._colorsChange.next(colors); }
 
-  get filtering(): string { return this._filteringChange.value; }
-  set filtering(filtering: string) { this._filteringChange.next(filtering); }
+  get filtering(): any { return this._filteringChange.value; }
+  set filtering(filtering: any) { this._filteringChange.next(filtering); }
 
   constructor(private _exampleDatabase: ExampleDatabase,
     private _sort: MatSort,
     private _paginator: MatPaginator,
     private _filter: ElementRef,
     private _chips: MatChipList,
-    private _filtering: string) {
+    private _filtering: string,
+    private _colors: string) {
     super();
   }
 
@@ -366,6 +385,7 @@ export class ExampleDataSource extends DataSource<any> {
       this._filterChange,
       this._chips.change,
       this._filteringChange,
+      this._colorsChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
@@ -382,21 +402,13 @@ export class ExampleDataSource extends DataSource<any> {
         // console.log(this._filtering);
         // console.log(this.filtering);
         // console.log(this._chips._chipInput._chipList.chips._results[0].value);
-
-        // console.log(this.chips.toLocaleLowerCase());
-        // console.log(this.chips);
-
-        // console.log(this._chips.value);
-        // console.log(this._chips.chips);
-        // console.log(this._chips.chips.length);
-        // console.log(this._chips.placeholder);
-        // console.log(this._chips.placeholder.length);
-        // console.log(this._chips.valueChange);
-
-
         // console.log('show item.name:' + item.color);
         // console.log('show filter value:' + this.filter);
         // console.log('_chips');
+
+        console.log('colors (before): ');
+        console.log(this.colors);
+        console.log(this._colors);
 
         console.log('this.tmpFilter (before): ');
         console.log(tmpFilter);
