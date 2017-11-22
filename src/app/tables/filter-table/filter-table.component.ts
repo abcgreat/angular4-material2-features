@@ -157,7 +157,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
                                 : this.filteringColor.split(value.source.value.toString())[0])
         + this.filteringColor.split(value.source.value.toString())[1] ;
         //console.log('filteringColors after removing:');
-        console.log(this.filteringColor);
+        //console.log(this.filteringColor);
 
         // Remove from the checklist.
 
@@ -330,6 +330,35 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     return indexFound;
   }
 
+  findIndexFromChipsForTextInputColumn (element: string) {
+
+        // console.log('inside of findIndexFromChips');
+        // console.log(element);
+        let indexFound = -1;
+
+        // console.log(this.fruits.length);
+
+        let index = 0;
+
+        this.fruits.forEach(x => {
+
+          // console.log(x);
+          // console.log(x.name);
+          // console.log(x.name.toString());
+          // console.log(index);
+
+          if (x.name.toString().startsWith(element)) {
+            indexFound = index;
+            // console.log('found the mathch!');
+            return indexFound;
+          }
+
+          index++;
+        });
+
+        return indexFound;
+      }
+
   addFromOutside(): void  {
     // console.log('Just a dummy fruit');
     this.fruits.push({ name: 'Just a dummy fruit' });
@@ -389,16 +418,34 @@ materialFocus(event) {
   }
 
   btnMenuUserNameClicked(event) {
-    // console.log('Inside of btnMenuUserNameClicked');
+    console.log('Inside of btnMenuUserNameClicked');
     // console.log(this.formUserNameInput);
     // console.log(this.formUserNameInput.value);
+
+
+    // Remove existing one.
+
+
+
+    // var tempArray = [];
+    // tempArray.push({ name: 'Color:' + value.source.value.toString()});
+    // this.remove(tempArray.pop());
+
+    let existingNameFilterIndex = this.findIndexFromChipsForTextInputColumn('Name:');
+
+    if (existingNameFilterIndex >= 0) {
+      this.fruits.splice(existingNameFilterIndex, 1);
+    }
+
     this.fruits.push({ name: 'Name:' + this.formUserNameInput.value.trim() });
 
-    this.filtering = 'Name:' + this.formUserNameInput.value.trim(); //'testing strings...';
+    this.filtering = 'Name:' + this.formUserNameInput.value.trim(); // 'testing strings...';
     // console.log('testing strings...');
     // console.log(this.filtering);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
+
+
   }
 
 }
@@ -500,12 +547,12 @@ export class ExampleDataSource extends DataSource<any> {
 
      // If the user changes the sort order, reset back to the first page.
      this._sort.sortChange.subscribe(() => {
-       console.log('inside of this._sort.sortChange.subscribe(() => {');
+       //console.log('inside of this._sort.sortChange.subscribe(() => {');
       this._paginator.pageIndex = 0;
     });
 
     this._chipsChange.subscribe(() => {
-      console.log('inside of this._chipsChange.subscribe(() => {');
+      //console.log('inside of this._chipsChange.subscribe(() => {');
      this._paginator.pageIndex = 0;
    });
 

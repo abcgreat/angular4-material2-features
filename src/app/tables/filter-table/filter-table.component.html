@@ -150,24 +150,20 @@
             (selectionChange)="onSelectChange($event)" (click)="$event.stopPropagation()">
               {{color}}
             </mat-list-option>
-          </mat-selection-list>
-          
-          <p>
-            Options selected: {{colorsList.selectedOptions.selected.length}}
-          </p>
+          </mat-selection-list>        
     
-          <button>Close</button>
+          <button mat-raised-button color="primary">Close</button>
   </mat-menu>
 
 
   <mat-menu #menuUserName="matMenu">
     
     <mat-form-field>
-      <input #formUserNameInput matInput placeholder="Filter on Name column" (click)="$event.stopPropagation()">
+      <input #formUserNameInput matInput placeholder="Filter on Name column" (click)="$event.stopPropagation()"(keydown)="btnMenuUserNameClicked($event);">
     </mat-form-field>
 
     <br />
-    <button id="btnMenuUserName" mat-raised-button (click)="$event.stopPropagation();btnMenuUserNameClicked($event);" color="primary">Apply</button>
+    <button mat-raised-button (click)="btnMenuUserNameClicked($event);" color="primary">Apply</button>
   </mat-menu>
 
 
