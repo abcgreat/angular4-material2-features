@@ -107,12 +107,12 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log( value.source.value.toString());
 
 
-    if (typeof(this.filteringColor) !== 'undefined') {
-      console.log('1. variable is not undefined');
-    } else {
-      console.log('2. variable is undefined');
-      this.filteringColor = '';
-    }
+    // if (typeof(this.filteringColor) !== 'undefined') {
+    //   console.log('1. variable is not undefined');
+    // } else {
+    //   console.log('2. variable is undefined');
+    //   this.filteringColor = '';
+    // }
 
     // if (typeof(this.filteringColor) !== 'undefined') {
     //   console.log('1. variable is not undefined');
@@ -128,23 +128,74 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     //   this.filteringColor = '';
     // }
 
+    // when selected.
     if (value.selected) {
-      this.fruits.push({ name: value.source.value.toString()});
-      this.filteringColor += value.source.value.toString() + ',';
-      } else {
-        this.filteringColor = this.filteringColor.split(value.source.value.toString())[0]
+      console.log('filteringColors before adding:');
+      console.log(this.filteringColor);
+
+      //value.source.value.toString()
+      if (typeof(this.filteringColor) === 'undefined' || this.filteringColor.indexOf(value.source.value.toString()) < 0) {
+  
+          if (typeof(this.filteringColor) !== 'undefined' && this.filteringColor !== '' ) {
+            console.log('1. variable is not undefined');
+            this.filteringColor += ',' + value.source.value.toString();
+          } else {
+            console.log('2. variable is undefined');
+            // this.filteringColor = '';
+            this.filteringColor = value.source.value.toString();
+          }
+    
+          this.fruits.push({ name: 'Color:' + value.source.value.toString()});
+          // this.filteringColor += ',' + value.source.value.toString();
+    
+          console.log('filteringColors after adding:');
+          console.log(this.filteringColor);
+        }
+
+      } else {  // when not unselected.
+        this.filteringColor = (this.filteringColor.split(value.source.value.toString())[0] === ',' ? ''
+                                : this.filteringColor.split(value.source.value.toString())[0])
         + this.filteringColor.split(value.source.value.toString())[1] ;
         console.log('filteringColors after removing:');
         console.log(this.filteringColor);
         // this.fruits.splice()
         // this.colorsList.options
 
-        
+
         console.log(this.colorsList.options.find(x => x.selected).selectionList);
-        // let index = this.fruits.indexOf(value.source.value.toString());
-        
+
+
+        // Remove from the checklist.
+
+        // this.chips.
+
+        console.log('value.source.value.toString()');
+        console.log(value.source.value.toString());
+
+
+        // this.fruits
+
+
+
+        var tempArray = [];
+        tempArray.push({ name: 'Color:' + value.source.value.toString()});
+        this.remove(tempArray.pop());
+        // this.remove({ name: 'Color:' + value.source.value.toString()});
+
+        // lodash
+
+        // _.remove(array, [predicate=_.identity])
+        // _.remove(array, [predicate=_.identity])
+
+        // console.log('chips');
+        // console.log(this.chips);
+        // // console.log(this.chips.);
+        // console.log(this.chips.chips.;
+
+        // let index = this.fruits.indexOf({ name: 'Color:' + value.source.value.toString()});
+
         //     if (index >= 0) {
-        //       this.fruits.splice(index, 1);
+        //       this.remove(this.fruits.splice(index, 1));
         //     }
 
         console.log('this.fruits');
@@ -246,7 +297,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
     console.log('adding a chip');
     console.log(value);
-    
+
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
 
@@ -256,18 +307,103 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     }
   }
 
+
   remove(fruit: any): void {
     let index = this.fruits.indexOf(fruit);
 
-console.log('remove(fruit: any): void ');
-console.log(fruit);
-console.log(fruit);
-console.log(fruit.name);
+    console.log('remove(fruit: any): void ');
+    console.log('index');
+    console.log(index);
+
+    if (index < 0) {
+      console.log('if (index < 0)');
+      this.fruits.every(fruit.name);
+    }
+    console.log(fruit.name);
+    console.log(fruit);
     if (index >= 0) {
       this.fruits.splice(index, 1);
+      console.log('this.fruits.splice(index, 1);');
+      // console.log(this.fruits.splice(index, 1));
+      console.log('this.fruits');
+      console.log(this.fruits);
+
+      if (fruit.name.toString().startsWith('Name:')) {
+        // remove from the filtering as well.
+        console.log('fruit.name.containing("Name:")');
+        this.filtering = '';
+      } else if (fruit.name.toString().startsWith('Color:')) {
+        // remove from the filtering as well.
+        // this.filtering = 'undefined';
+
+        console.log('filteringColors before removing:');
+        console.log(this.filteringColor);
+        console.log('fruit.name.containing("Color:")');
+
+        var nameOnly = fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6, fruit.name.toString().length - 6);
+        // console.log(nameOnly);
+        // console.log(this.filteringColor.split(nameOnly)[0]);
+        // console.log(this.filteringColor.split(nameOnly)[1] );
+
+
+        // console.log('this.colorsList.options.find(x => x.selected).selectionList');
+        // console.log(this.colorsList.selectedOptions.select(nameOnly)); //  .options.(x => x.selected).
+
+
+        // Trim for ','
+        this.filteringColor = this.filteringColor.split(nameOnly)[0] + this.filteringColor.split(nameOnly)[1];
+
+
+        this.filteringColor = this.filteringColor.replace(',,', ',');
+
+        if (this.filteringColor === ',') {
+          this.filteringColor = '';
+        }
+
+
+        // Unselect option items //-----------------------------------------------------------------
+        this.colorsList.options.find(x => x.value.toString() === nameOnly).selected = false;
+
+        // -----------------------------------------------------------------
+
+        // this.filteringColor = this.filteringColor.toString
+
+        // if (this.filteringColor[this.filteringColor.length - 1] === ',') {
+        //   this.filteringColor = this.filteringColor.substring(0, this.filteringColor.length - 2);
+        // }
+
+
+
+
+        // console.log(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        // fruit.name.toString().length));
+        // console.log(fruit.name.toString().indexOf('Color:'));
+        // console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        //           fruit.name.toString().length)));
+
+        //           console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        //           fruit.name.toString().length)));
+
+        //           console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        //           fruit.name.toString().length))[0]);
+
+        //           console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        //           fruit.name.toString().length))[1]);
+
+        // this.filteringColor = this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        //           fruit.name.toString().length))[0]
+        //           + this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
+        //           fruit.name.toString().length))[1] ;
+        console.log('filteringColors after removing:');
+        console.log(this.filteringColor);
+      }
+
+      this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
+        this.filter, this.chips, this.filtering, this.filteringColor);
     }
   }
 
+  
   addFromOutside(): void  {
     console.log('Just a dummy fruit');
     this.fruits.push({ name: 'Just a dummy fruit' });
@@ -293,8 +429,8 @@ console.log(fruit.name);
       this.dataSource.filter = this.filter.nativeElement.value;
     });
 
-    console.log(this.dataService.cars);
-    this.someProperty = this.dataService.myData();
+    // console.log(this.dataService.cars);
+    // this.someProperty = this.dataService.myData();
 
   }
 
@@ -448,9 +584,6 @@ export class ExampleDataSource extends DataSource<any> {
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      // const data = this.getSortedData().slice();
-
-      console.log('Got into Observable.merge(...displayDataChanges).map(() => ');
 
       const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
         let searchStr = '';
