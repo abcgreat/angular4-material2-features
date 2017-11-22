@@ -95,16 +95,16 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   }
 
   onSelectChange(value: any) {
-    console.log('change => ', value);
-    console.log( value);
+    // console.log('change => ', value);
+    // console.log( value);
 
     // console.log( value.valueOf());
 
-    console.log( value.selected);
+    // console.log( value.selected);
     
-    console.log('this.filteringColor');
-    console.log(this.filteringColor);
-    console.log( value.source.value.toString());
+    // console.log('this.filteringColor');
+    // console.log(this.filteringColor);
+    // console.log( value.source.value.toString());
 
 
     // if (typeof(this.filteringColor) !== 'undefined') {
@@ -130,17 +130,17 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
 
     // when selected.
     if (value.selected) {
-      console.log('filteringColors before adding:');
-      console.log(this.filteringColor);
+      // console.log('filteringColors before adding:');
+      // console.log(this.filteringColor);
 
       //value.source.value.toString()
       if (typeof(this.filteringColor) === 'undefined' || this.filteringColor.indexOf(value.source.value.toString()) < 0) {
   
           if (typeof(this.filteringColor) !== 'undefined' && this.filteringColor !== '' ) {
-            console.log('1. variable is not undefined');
+            //console.log('1. variable is not undefined');
             this.filteringColor += ',' + value.source.value.toString();
           } else {
-            console.log('2. variable is undefined');
+            //console.log('2. variable is undefined');
             // this.filteringColor = '';
             this.filteringColor = value.source.value.toString();
           }
@@ -148,88 +148,29 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
           this.fruits.push({ name: 'Color:' + value.source.value.toString()});
           // this.filteringColor += ',' + value.source.value.toString();
     
-          console.log('filteringColors after adding:');
-          console.log(this.filteringColor);
+          //console.log('filteringColors after adding:');
+          //console.log(this.filteringColor);
         }
 
       } else {  // when not unselected.
         this.filteringColor = (this.filteringColor.split(value.source.value.toString())[0] === ',' ? ''
                                 : this.filteringColor.split(value.source.value.toString())[0])
         + this.filteringColor.split(value.source.value.toString())[1] ;
-        console.log('filteringColors after removing:');
+        //console.log('filteringColors after removing:');
         console.log(this.filteringColor);
-        // this.fruits.splice()
-        // this.colorsList.options
-
-
-        //console.log(this.colorsList.options.find(x => x.selected).selectionList);
-
 
         // Remove from the checklist.
-
-        // this.chips.
-
-        console.log('value.source.value.toString()');
-        console.log(value.source.value.toString());
-
-
-        // this.fruits
-
-
 
         var tempArray = [];
         tempArray.push({ name: 'Color:' + value.source.value.toString()});
         this.remove(tempArray.pop());
-        // this.remove({ name: 'Color:' + value.source.value.toString()});
-
-        // lodash
-
-        // _.remove(array, [predicate=_.identity])
-        // _.remove(array, [predicate=_.identity])
-
-        // console.log('chips');
-        // console.log(this.chips);
-        // // console.log(this.chips.);
-        // console.log(this.chips.chips.;
-
-        // let index = this.fruits.indexOf({ name: 'Color:' + value.source.value.toString()});
-
-        //     if (index >= 0) {
-        //       this.remove(this.fruits.splice(index, 1));
-        //     }
-
-        console.log('this.fruits');
-        console.log(this.fruits);
-        console.log('value.source.value.toString()');
-        console.log(value.source.value.toString());
-        console.log('this.fruits.indexOf(value.source.value.toString())');
-        console.log(this.fruits.indexOf(<any>[{name: value.source.value.toString()}]));
-      // this.fruits.splice(this.fruits.indexOf(value.source.value.toString()), 1);
-      //console.log(this.fruits.splice(this.fruits.indexOf(value.source.value.toString()), 1));
-
-        // this.remove({ name: value.source.value.toString()});
-        // work on removing from the chips;
-        //this.fruits.splice(value.source.value.toString());
     }
-
-    //Use chips to use on filtering
-    // console.log(this.chips);
-
-    // console.log('colors');
-
-    // console.log(this.colorsList);
-    // console.log(this.colorsList.options.find(x => x.selected).selectionList);
-
-    // console.log('filteringColor');
-    // console.log(this.filteringColor);
 
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
 
-    console.log('change => !End!');
+    // console.log('change => !End!');
   }
-
-
 
   submit(rows) {
     console.log(rows.selectedOptions.selected.map(elements => {
@@ -293,10 +234,10 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
       this.fruits.push({ name: value.trim() });
     }
 
-    console.log('test this: this.filter.nativeElement = value.trim();');
+    // console.log('test this: this.filter.nativeElement = value.trim();');
 
-    console.log('adding a chip');
-    console.log(value);
+    // console.log('adding a chip');
+    // console.log(value);
 
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
@@ -311,38 +252,29 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   remove(fruit: any): void {
     let index = this.fruits.indexOf(fruit);
 
-    console.log('remove(fruit: any): void ');
-    console.log('index');
-    console.log(index);
-
     // This is for when list option is unselected.
     if (index < 0) {
-      console.log('if (index < 0)');
-      // console.log(this.fruits[fruit.name]);
-      console.log(this.findIndexFromChips(fruit.name));
+      // console.log('if (index < 0)');
+      // console.log(this.findIndexFromChips(fruit.name));
 
       index = this.findIndexFromChips(fruit.name);
     }
-    console.log(fruit.name);
-    console.log(fruit);
+    // console.log(fruit.name);
+    // console.log(fruit);
     if (index >= 0) {
       this.fruits.splice(index, 1);
-      console.log('this.fruits.splice(index, 1);');
-      // console.log(this.fruits.splice(index, 1));
-      console.log('this.fruits');
-      console.log(this.fruits);
 
       if (fruit.name.toString().startsWith('Name:')) {
         // remove from the filtering as well.
-        console.log('fruit.name.containing("Name:")');
+        // console.log('fruit.name.containing("Name:")');
         this.filtering = '';
       } else if (fruit.name.toString().startsWith('Color:')) {
         // remove from the filtering as well.
         // this.filtering = 'undefined';
 
-        console.log('filteringColors before removing:');
-        console.log(this.filteringColor);
-        console.log('fruit.name.containing("Color:")');
+        // console.log('filteringColors before removing:');
+        // console.log(this.filteringColor);
+        // console.log('fruit.name.containing("Color:")');
 
         var nameOnly = fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6, fruit.name.toString().length - 6);
 
@@ -360,38 +292,8 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
         // Unselect option items //-----------------------------------------------------------------
         this.colorsList.options.find(x => x.value.toString() === nameOnly).selected = false;
 
-        // -----------------------------------------------------------------
-
-        // this.filteringColor = this.filteringColor.toString
-
-        // if (this.filteringColor[this.filteringColor.length - 1] === ',') {
-        //   this.filteringColor = this.filteringColor.substring(0, this.filteringColor.length - 2);
-        // }
-
-
-
-
-        // console.log(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        // fruit.name.toString().length));
-        // console.log(fruit.name.toString().indexOf('Color:'));
-        // console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        //           fruit.name.toString().length)));
-
-        //           console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        //           fruit.name.toString().length)));
-
-        //           console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        //           fruit.name.toString().length))[0]);
-
-        //           console.log(this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        //           fruit.name.toString().length))[1]);
-
-        // this.filteringColor = this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        //           fruit.name.toString().length))[0]
-        //           + this.filteringColor.split(fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6,
-        //           fruit.name.toString().length))[1] ;
-        console.log('filteringColors after removing:');
-        console.log(this.filteringColor);
+        // console.log('filteringColors after removing:');
+        // console.log(this.filteringColor);
       }
 
       this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
@@ -399,30 +301,26 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     }
   }
 
-  // isItThere(element) {
-  //   return element.name.toString() === 'Color:';
-  // }
-
   findIndexFromChips (element: string) {
 
-    console.log('inside of findIndexFromChips');
-    console.log(element);
+    // console.log('inside of findIndexFromChips');
+    // console.log(element);
     var indexFound = -1;
 
-    console.log(this.fruits.length);
+    // console.log(this.fruits.length);
 
     var index = 0;
 
     this.fruits.forEach(x => {
 
-      console.log(x);
-      console.log(x.name);
-      console.log(x.name.toString());
-      console.log(index);
+      // console.log(x);
+      // console.log(x.name);
+      // console.log(x.name.toString());
+      // console.log(index);
 
       if (x.name.toString() === element) {
         indexFound = index;
-        console.log('found the mathch!');
+        // console.log('found the mathch!');
         return indexFound;
       }
 
@@ -433,19 +331,16 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
   }
 
   addFromOutside(): void  {
-    console.log('Just a dummy fruit');
+    // console.log('Just a dummy fruit');
     this.fruits.push({ name: 'Just a dummy fruit' });
   }
 
   onOptionSelectionChange (item: string): void {
-    console.log('Just a dummy fruit');
+    // console.log('Just a dummy fruit');
     this.fruits.push({ name: 'Just a dummy fruit' });
   }
 
-
-
   ngOnInit() {
-    // this.filter.nativeElement.value = 'lime';
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
 
@@ -456,35 +351,27 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
       if (!this.dataSource) { return; }
       this.dataSource.filter = this.filter.nativeElement.value;
     });
-
-    // console.log(this.dataService.cars);
-    // this.someProperty = this.dataService.myData();
-
   }
 
   onOpenMenu(menu: any): void {
-    // console.log(menu);
     console.log('inside of onOpenMenu(menu: any): void');
   }
 
   ngAfterViewInit() {
 
     this.notificationMenuBtn.onMenuOpen.subscribe(() => {
-      console.log('method 1');
-      //this.formUserNameInput.nativeElement.focus();
+      //console.log('method 1');
     });
 
     this.notificationMenuUserNameBtn.menuOpened.subscribe(() => {
-      console.log('method 1.1');
-      //this.formUserNameInput.nativeElement.focus();
+      //console.log('method 1.1');
     });
   }
 
 materialFocus(event) {
-  console.log('event');
+  //console.log('event');
 
   this.formUserNameInput.focus();
-    // setTimeout('this.formUserNameInput.focus()', 500);
 }
 
   menuHasOpened() {
@@ -502,14 +389,14 @@ materialFocus(event) {
   }
 
   btnMenuUserNameClicked(event) {
-    console.log('Inside of btnMenuUserNameClicked');
-    console.log(this.formUserNameInput);
-    console.log(this.formUserNameInput.value);
+    // console.log('Inside of btnMenuUserNameClicked');
+    // console.log(this.formUserNameInput);
+    // console.log(this.formUserNameInput.value);
     this.fruits.push({ name: 'Name:' + this.formUserNameInput.value.trim() });
 
     this.filtering = 'Name:' + this.formUserNameInput.value.trim(); //'testing strings...';
-    console.log('testing strings...');
-    console.log(this.filtering);
+    // console.log('testing strings...');
+    // console.log(this.filtering);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
   }
@@ -611,6 +498,34 @@ export class ExampleDataSource extends DataSource<any> {
       this._colorsChange,
     ];
 
+     // If the user changes the sort order, reset back to the first page.
+     this._sort.sortChange.subscribe(() => {
+       console.log('inside of this._sort.sortChange.subscribe(() => {');
+      this._paginator.pageIndex = 0;
+    });
+
+    this._chipsChange.subscribe(() => {
+      console.log('inside of this._chipsChange.subscribe(() => {');
+     this._paginator.pageIndex = 0;
+   });
+
+
+    // this._colorsChange.subscribe(() => {
+    //   console.log('inside of this._colorsChange.subscribe(() => {');
+    //  this._paginator.pageIndex = 0;
+    // });
+
+    // this._chips.chipSelectionChanges.subscribe(() => {
+    //   console.log('this._chips.chipSelectionChanges.subscribe(() => {  ');
+    //   this._paginator.pageIndex = 0;
+    // });
+
+    //  // If the user changes the sort order, reset back to the first page.
+    //  this._filter.nativeElement._filterChange.subscribe(() => {
+    //   console.log('inside of this._filter.nativeElement._filterChange.subscribe(() => {')
+    //   this._paginator.pageIndex = 0;
+    // });
+
     return Observable.merge(...displayDataChanges).map(() => {
 
       const data = this._exampleDatabase.data.slice().filter((item: UserData) => {
@@ -652,10 +567,10 @@ export class ExampleDataSource extends DataSource<any> {
           pass = searchStr.indexOf(tmpFilter) !== -1;
 
           //return searchStr.indexOf(tmpFilter) !== -1;
-          console.log('Yes Name is in it.');
-          console.log(searchStr);
-          console.log('pass');
-          console.log(pass);
+          // console.log('Yes Name is in it.');
+          // console.log(searchStr);
+          // console.log('pass');
+          // console.log(pass);
           if (pass) {
             return pass;
           }
@@ -668,11 +583,11 @@ export class ExampleDataSource extends DataSource<any> {
             tmpFilter = this._colors.toLowerCase();
 
             pass = tmpFilter.indexOf(item.color) !== -1;
-            console.log('Yes Color is in it.');
-            console.log(this._colors);
+            // console.log('Yes Color is in it.');
+            // console.log(this._colors);
   
-            console.log('pass');
-            console.log(pass);
+            // console.log('pass');
+            // console.log(pass);
             if (pass) {
               return pass;
             }
@@ -696,11 +611,20 @@ export class ExampleDataSource extends DataSource<any> {
 
         //return true; //.indexOf(tmpFilter) !== -1;
         // return (pass || !doesNotHaveFilter) || (!pass && !doesNotHaveFilter);
+
+
         return doesNotHaveFilter || pass;
       });
 
+      // console.log('before returning the data:');
+      // console.log('const startIndex = this._paginator.pageIndex * this._paginator.pageSize;');
+      // console.log('return data.splice(startIndex, this._paginator.pageSize);');
+
+      // console.log('data.length)');
+      // console.log(data.length);
+      this._paginator.length = data.length;
       // Grab the page's slice of data.
-      const startIndex = 0; // this._paginator.pageIndex * this._paginator.pageSize;
+      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       return data.splice(startIndex, this._paginator.pageSize);
 
     });
