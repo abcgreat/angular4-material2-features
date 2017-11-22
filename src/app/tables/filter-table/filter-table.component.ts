@@ -162,7 +162,7 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
         // this.colorsList.options
 
 
-        console.log(this.colorsList.options.find(x => x.selected).selectionList);
+        //console.log(this.colorsList.options.find(x => x.selected).selectionList);
 
 
         // Remove from the checklist.
@@ -213,15 +213,15 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     }
 
     //Use chips to use on filtering
-    console.log(this.chips);
+    // console.log(this.chips);
 
-    console.log('colors');
+    // console.log('colors');
 
-    console.log(this.colorsList);
-    console.log(this.colorsList.options.find(x => x.selected).selectionList);
+    // console.log(this.colorsList);
+    // console.log(this.colorsList.options.find(x => x.selected).selectionList);
 
-    console.log('filteringColor');
-    console.log(this.filteringColor);
+    // console.log('filteringColor');
+    // console.log(this.filteringColor);
 
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort, this.paginator,
       this.filter, this.chips, this.filtering, this.filteringColor);
@@ -315,9 +315,13 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     console.log('index');
     console.log(index);
 
+    // This is for when list option is unselected.
     if (index < 0) {
       console.log('if (index < 0)');
-      this.fruits.every(fruit.name);
+      // console.log(this.fruits[fruit.name]);
+      console.log(this.findIndexFromChips(fruit.name));
+
+      index = this.findIndexFromChips(fruit.name);
     }
     console.log(fruit.name);
     console.log(fruit);
@@ -341,14 +345,6 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
         console.log('fruit.name.containing("Color:")');
 
         var nameOnly = fruit.name.toString().substr(fruit.name.toString().indexOf('Color:') + 6, fruit.name.toString().length - 6);
-        // console.log(nameOnly);
-        // console.log(this.filteringColor.split(nameOnly)[0]);
-        // console.log(this.filteringColor.split(nameOnly)[1] );
-
-
-        // console.log('this.colorsList.options.find(x => x.selected).selectionList');
-        // console.log(this.colorsList.selectedOptions.select(nameOnly)); //  .options.(x => x.selected).
-
 
         // Trim for ','
         this.filteringColor = this.filteringColor.split(nameOnly)[0] + this.filteringColor.split(nameOnly)[1];
@@ -403,7 +399,39 @@ export class FilterTableComponent implements OnInit, AfterViewInit  {
     }
   }
 
-  
+  // isItThere(element) {
+  //   return element.name.toString() === 'Color:';
+  // }
+
+  findIndexFromChips (element: string) {
+
+    console.log('inside of findIndexFromChips');
+    console.log(element);
+    var indexFound = -1;
+
+    console.log(this.fruits.length);
+
+    var index = 0;
+
+    this.fruits.forEach(x => {
+
+      console.log(x);
+      console.log(x.name);
+      console.log(x.name.toString());
+      console.log(index);
+
+      if (x.name.toString() === element) {
+        indexFound = index;
+        console.log('found the mathch!');
+        return indexFound;
+      }
+
+      index++;
+    });
+
+    return indexFound;
+  }
+
   addFromOutside(): void  {
     console.log('Just a dummy fruit');
     this.fruits.push({ name: 'Just a dummy fruit' });
